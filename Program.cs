@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Globalization;
-using System.Linq;
-using Nsu.HackathonProblem.Contracts;
+﻿using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.HR;
 using Nsu.HackathonProblem.Utils;
 

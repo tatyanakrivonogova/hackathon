@@ -1,4 +1,3 @@
-using CsvHelper.Configuration;
 using Nsu.HackathonProblem.Contracts;
 
 namespace Nsu.HackathonProblem.Utils
