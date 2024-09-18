@@ -1,0 +1,22 @@
+using System;
+using System.Globalization;
+using CsvHelper;
+using CsvHelper.Configuration;
+using Nsu.HackathonProblem.Contracts;
+
+namespace Nsu.HackathonProblem.Utils
+{
+    public class EmployeesReader
+    {
+        public static IEnumerable<Employee> ReadEmployees(string filePath)
+        {
+            using (var streamReader = new StreamReader(filePath))
+            {
+                using (var csvReader = new CsvReader(streamReader, new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";" }))
+                {
+                    return csvReader.GetRecords<Employee>().ToList();
+                }
+            }
+        }
+    }
+}
