@@ -4,13 +4,13 @@ namespace Nsu.HackathonProblem.HR
 {
     public class HRDirector
     {
-        enum EmployeeLevel
+        public enum EmployeeLevel
         {
             TeamLead,
             Junior
         }
 
-        public double countScore(IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors, IEnumerable<Team> teams,
+        public double CountScore(IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors, IEnumerable<Team> teams,
             IEnumerable<Wishlist> teamLeadsWishlists, IEnumerable<Wishlist> juniorsWishlists)
         {
             double sum = 0.0;
@@ -30,7 +30,7 @@ namespace Nsu.HackathonProblem.HR
             return (teamLeads.Count() + juniors.Count()) / sum;
         }
 
-        static int[] CountSatisfactionIndexes(EmployeeLevel employeeLevel, IEnumerable<Employee> employees, IEnumerable<Team> teams, IEnumerable<Wishlist> wishlists)
+        public int[] CountSatisfactionIndexes(EmployeeLevel employeeLevel, IEnumerable<Employee> employees, IEnumerable<Team> teams, IEnumerable<Wishlist> wishlists)
         {
             var indexes = new int[employees.Count() + 1];
             foreach (Employee employee in employees)
@@ -38,9 +38,8 @@ namespace Nsu.HackathonProblem.HR
                 indexes[employee.Id] = 0;
                 foreach (Team team in teams)
                 {
-                    Employee t;
-                    Employee j;
-                    team.Deconstruct(out t, out j);
+                    Employee t = team.TeamLead;
+                    Employee j = team.Junior;
                     if ((employeeLevel == EmployeeLevel.TeamLead && t.Id == employee.Id)
                          || (employeeLevel == EmployeeLevel.Junior && j.Id == employee.Id))
                     {
@@ -48,7 +47,7 @@ namespace Nsu.HackathonProblem.HR
                         if (wishlist == null) continue;
                         var rating = wishlist.DesiredEmployees;
                         int teammateId = (employeeLevel == EmployeeLevel.TeamLead ? j.Id : t.Id);
-                        int teammateIndex = findTeammateIndex(rating, teammateId);
+                        int teammateIndex = FindTeammateIndex(rating, teammateId);
                         if (teammateIndex == -1) continue;
                         indexes[employee.Id] = employees.Count() - teammateIndex;
                     }
@@ -57,7 +56,7 @@ namespace Nsu.HackathonProblem.HR
             return indexes;
         }
 
-        static int findTeammateIndex(int[] rating, int id)
+        private int FindTeammateIndex(int[] rating, int id)
         {
             for (int i = 0; i < rating.Length; i++)
             {
