@@ -3,9 +3,9 @@ using Nsu.HackathonProblem.Contracts;
 
 namespace Nsu.HackathonProblem.HR
 {
-    public class HRManager
+    public class HRManager(ITeamBuildingStrategy concreteStrategy)
     {
-        ITeamBuildingStrategy strategy = new BaseTeamBuildingStrategy();
+        ITeamBuildingStrategy strategy = concreteStrategy;
         public IEnumerable<Team> BuildTeams(IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors,
             IEnumerable<Wishlist> teamLeadsWishlists, IEnumerable<Wishlist> juniorsWishlists)
         {

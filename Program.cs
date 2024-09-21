@@ -1,5 +1,6 @@
 ﻿using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.HR;
+using Nsu.HackathonProblem.Strategies;
 using Nsu.HackathonProblem.Utils;
 
 namespace Nsu.HackathonProblem.HackathonProblem
@@ -16,7 +17,7 @@ namespace Nsu.HackathonProblem.HackathonProblem
             // reading teamLeads
             var teamLeads = EmployeesReader.ReadEmployees("Teamleads5.csv");
 
-            HRManager manager = new HRManager();
+            HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
             HRDirector director = new HRDirector();
             Hackathon hackathon = new Hackathon();
             double sumScore = 0.0;
