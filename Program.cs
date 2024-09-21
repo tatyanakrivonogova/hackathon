@@ -10,10 +10,10 @@ namespace Nsu.HackathonProblem.HackathonProblem
         static void Main(string[] args)
         {
             // reading juniors
-            var juniors = EmployeesReader.ReadEmployees(Constants.juniorsFile);
+            var juniors = EmployeesReader.ReadJuniors(Constants.juniorsFile);
 
             // reading teamLeads
-            var teamLeads = EmployeesReader.ReadEmployees(Constants.teamLeadsFile);
+            var teamLeads = EmployeesReader.ReadTeamLeads(Constants.teamLeadsFile);
 
             HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
             HRDirector director = new HRDirector();
