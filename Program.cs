@@ -7,28 +7,26 @@ namespace Nsu.HackathonProblem.HackathonProblem
 {
     class Program
     {
-        const int hackathonRepeats = 10;
-        const int teamsCount = 5;
         static void Main(string[] args)
         {
             // reading juniors
-            var juniors = EmployeesReader.ReadEmployees("Juniors5.csv");
+            var juniors = EmployeesReader.ReadEmployees(Constants.juniorsFile);
 
             // reading teamLeads
-            var teamLeads = EmployeesReader.ReadEmployees("Teamleads5.csv");
+            var teamLeads = EmployeesReader.ReadEmployees(Constants.teamLeadsFile);
 
             HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
             HRDirector director = new HRDirector();
             Hackathon hackathon = new Hackathon();
             double sumScore = 0.0;
-            for (int i = 0; i < hackathonRepeats; i++)
+            for (int i = 0; i < Constants.hackathonRepeats; i++)
             {
                 double score = hackathon.RunHackathon(manager, director, teamLeads, juniors);
                 Console.WriteLine($"score [i={i}]: {score}");
                 sumScore += score;
             }
 
-            Console.WriteLine($"Average score: {sumScore / hackathonRepeats}");
+            Console.WriteLine($"Average score: {sumScore / Constants.hackathonRepeats}");
         }
     }
 }
