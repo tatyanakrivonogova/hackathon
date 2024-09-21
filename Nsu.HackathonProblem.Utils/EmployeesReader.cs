@@ -8,15 +8,18 @@ namespace Nsu.HackathonProblem.Utils
 {
     public class EmployeesReader
     {
-        public static IEnumerable<Employee> ReadEmployees(string filePath)
+        public static IEnumerable<Employee> ReadJuniors(string filePath)
         {
-            using (var streamReader = new StreamReader(filePath))
-            {
-                using (var csvReader = new CsvReader(streamReader, new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";" }))
-                {
-                    return csvReader.GetRecords<Employee>().ToList();
-                }
-            }
+            using var streamReader = new StreamReader(filePath);
+            using var csvReader = new CsvReader(streamReader, new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";" });
+            return csvReader.GetRecords<Junior>().ToList();
+        }
+
+        public static IEnumerable<Employee> ReadTeamLeads(string filePath)
+        {
+            using var streamReader = new StreamReader(filePath);
+            using var csvReader = new CsvReader(streamReader, new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";" });
+            return csvReader.GetRecords<TeamLead>().ToList();
         }
     }
 }
