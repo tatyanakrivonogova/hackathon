@@ -2,7 +2,7 @@ using Nsu.HackathonProblem.Contracts;
 
 namespace Nsu.HackathonProblem.Utils
 {
-    public class WishlistGenerator
+    public static class WishlistGenerator
     {
         public static IEnumerable<Wishlist> GenerateWishlists(IEnumerable<Employee> employees, IEnumerable<Employee> others)
         {

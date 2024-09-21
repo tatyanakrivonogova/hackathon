@@ -6,7 +6,7 @@ using Nsu.HackathonProblem.Contracts;
 
 namespace Nsu.HackathonProblem.Utils
 {
-    public class EmployeesReader
+    public static class EmployeesReader
     {
         public static IEnumerable<Employee> ReadJuniors(string filePath)
         {
