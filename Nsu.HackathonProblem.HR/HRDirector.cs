@@ -2,7 +2,7 @@ using Nsu.HackathonProblem.Contracts;
 
 namespace Nsu.HackathonProblem.HR
 {
-    public class HRDirector
+    public class HRDirector : IHRDirector
     {
         public double CountScore(IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors, 
             IEnumerable<Team> teams, IEnumerable<Wishlist> teamLeadsWishlists, 

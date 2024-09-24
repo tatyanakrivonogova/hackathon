@@ -3,9 +3,9 @@ using Nsu.HackathonProblem.HR;
 
 namespace Nsu.HackathonProblem.Contracts
 {
-    public class Hackathon
+    public class Hackathon : IHackathon
     {
-        public double RunHackathon(HRManager manager, HRDirector director, 
+        public double RunHackathon(IHRManager manager, IHRDirector director, 
                 IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors)
         {
             // generate wishlists randomly

@@ -1,7 +1,8 @@
-﻿using Nsu.HackathonProblem.Contracts;
-using Nsu.HackathonProblem.HR;
+﻿using Microsoft.Extensions.DependencyInjection; 
+using Microsoft.Extensions.Hosting; 
+using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.Strategies;
-using Nsu.HackathonProblem.Utils;
+using Nsu.HackathonProblem.HR;
 
 namespace Nsu.HackathonProblem.HackathonProblem
 {
@@ -9,24 +10,28 @@ namespace Nsu.HackathonProblem.HackathonProblem
     {
         static void Main(string[] args)
         {
-            // reading juniors
-            var juniors = EmployeesReader.ReadJuniors(Constants.juniorsFile);
-
-            // reading teamLeads
-            var teamLeads = EmployeesReader.ReadTeamLeads(Constants.teamLeadsFile);
-
-            HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
-            HRDirector director = new HRDirector();
-            Hackathon hackathon = new Hackathon();
-            double sumScore = 0.0;
-            for (int i = 0; i < Constants.hackathonRepeats; i++)
-            {
-                double score = hackathon.RunHackathon(manager, director, teamLeads, juniors);
-                Console.WriteLine($"score [i={i}]: {score}");
-                sumScore += score;
-            }
-
-            Console.WriteLine($"Average score: {sumScore / Constants.hackathonRepeats}");
+            // var host = Host.CreateDefaultBuilder(args) 
+            //         .ConfigureServices((hostContext, services) => 
+            //     { 
+            //             services.AddHostedService<Experiment>(); 
+            //             services.AddTransient<Hackathon>(_ => new Hackathon()); 
+            //             services.AddTransient<ITeamBuildingStrategy, BaseTeamBuildingStrategy>(); 
+            //             services.AddTransient<HRManager>();
+            //             services.AddTransient<HRDirector>(); 
+            //     }).Build(); 
+            // host.Run(); 
+            var host = Host.CreateDefaultBuilder()
+                .ConfigureServices(services =>
+                {
+                    services.AddSingleton<Experiment>();
+                    services.AddTransient<IHackathon, Hackathon>(); 
+                    services.AddTransient<ITeamBuildingStrategy, BaseTeamBuildingStrategy>(); 
+                    services.AddTransient<IHRManager, HRManager>();
+                    services.AddTransient<IHRDirector, HRDirector>(); 
+                })
+                .Build();
+            var experiment = host.Services.GetService<Experiment>();
+            experiment?.Run();
         }
     }
 }
