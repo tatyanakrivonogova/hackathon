@@ -24,10 +24,10 @@ namespace Nsu.HackathonProblem.HackathonProblem
                 .ConfigureServices(services =>
                 {
                     services.AddSingleton<Experiment>();
-                    services.AddTransient<IHackathon, Hackathon>(); 
+                    services.AddTransient<Hackathon>(_ => new Hackathon()); 
                     services.AddTransient<ITeamBuildingStrategy, BaseTeamBuildingStrategy>(); 
-                    services.AddTransient<IHRManager, HRManager>();
-                    services.AddTransient<IHRDirector, HRDirector>(); 
+                    services.AddTransient<HRManager>();
+                    services.AddTransient<HRDirector>(); 
                 })
                 .Build();
             var experiment = host.Services.GetService<Experiment>();

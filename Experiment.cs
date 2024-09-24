@@ -3,7 +3,7 @@ using Nsu.HackathonProblem.HR;
 using Nsu.HackathonProblem.Strategies;
 using Nsu.HackathonProblem.Utils;
 
-class Experiment(IHackathon hackathon, IHRDirector director, IHRManager manager)
+class Experiment(Hackathon hackathon, HRDirector director, HRManager manager)
 {
     public void Run()
     {
