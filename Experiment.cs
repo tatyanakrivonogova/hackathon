@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.HR;
 using Nsu.HackathonProblem.Strategies;
@@ -13,9 +14,6 @@ class Experiment(Hackathon hackathon, HRDirector director, HRManager manager)
         // reading teamLeads
         var teamLeads = EmployeesReader.ReadTeamLeads(Constants.teamLeadsFile);
 
-        // HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
-        // HRDirector director = new HRDirector();
-        // Hackathon hackathon = new Hackathon();
         double sumScore = 0.0;
         for (int i = 0; i < Constants.hackathonRepeats; i++)
         {
