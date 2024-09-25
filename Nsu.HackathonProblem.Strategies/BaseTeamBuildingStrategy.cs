@@ -12,7 +12,8 @@ namespace Nsu.HackathonProblem.Strategies
             foreach (var lead in teamLeads)
             {
                 var wishlist = teamLeadsWishlists.FirstOrDefault(w => w.EmployeeId == lead.Id);
-                if (wishlist == null) continue;
+                if (wishlist == null) 
+                    continue;
 
                 foreach (var desiredId in wishlist.DesiredEmployees)
                 {

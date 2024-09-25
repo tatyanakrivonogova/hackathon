@@ -14,17 +14,16 @@ namespace Nsu.HackathonProblem.HackathonProblem
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddOptions<ConstantOptions>().Bind
-                        (context.Configuration.GetSection("Constants"));
+                    services.AddOptions<HackathonOptions>().Bind
+                        (context.Configuration.GetSection("Hackathon"));
                     services.AddHostedService<ExperimentWorker>()
-                    .AddSingleton<Experiment>()
-                    .AddTransient<Hackathon>()
-                    .AddTransient<ITeamBuildingStrategy, BaseTeamBuildingStrategy>()
-                    .AddTransient<HRManager>()
-                    .AddTransient<HRDirector>()
-                    .BuildServiceProvider();
-                })
-                .Build();
+                        .AddSingleton<Experiment>()
+                        .AddTransient<Hackathon>()
+                        .AddTransient<ITeamBuildingStrategy, BaseTeamBuildingStrategy>()
+                        .AddTransient<HRManager>()
+                        .AddTransient<HRDirector>()
+                        .BuildServiceProvider();
+                }).Build();
             host.Run();
         }
     }

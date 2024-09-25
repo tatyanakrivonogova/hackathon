@@ -1,7 +1,7 @@
-public class ConstantOptions
+public class HackathonOptions
 {
-    public int hackathonRepeats { get; set; }
-    public string juniorsFile { get; set; }
-    public string teamLeadsFile { get; set; }
+    public required int hackathonRepeats { get; set; }
+    public required string juniorsFile { get; set; }
+    public required string teamLeadsFile { get; set; }
 }
 

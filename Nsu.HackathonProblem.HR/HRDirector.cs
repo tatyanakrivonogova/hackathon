@@ -11,10 +11,14 @@ namespace Nsu.HackathonProblem.HR
             double sum = 0.0;
             // add satisfaction indexes for juniors
             int[] indexes = CountSatisfactionIndexes(juniors, teams, juniorsWishlists);
-            for (int i = 1; i < indexes.Length; ++i) if (indexes[i] != 0.0) sum += 1.0 / indexes[i];
+            for (int i = 1; i < indexes.Length; ++i) 
+                if (indexes[i] != 0.0) 
+                    sum += 1.0 / indexes[i];
             // add satisfaction indexes for teamLeads
             indexes = CountSatisfactionIndexes(teamLeads, teams, teamLeadsWishlists);
-            for (int i = 1; i < indexes.Length; ++i) if (indexes[i] != 0.0) sum += 1.0 / indexes[i];
+            for (int i = 1; i < indexes.Length; ++i) 
+                if (indexes[i] != 0.0) 
+                    sum += 1.0 / indexes[i];
 
             return (teamLeads.Count() + juniors.Count()) / sum;
         }
@@ -33,11 +37,13 @@ namespace Nsu.HackathonProblem.HR
                          || (employee is Junior && j.Id == employee.Id))
                     {
                         var wishlist = wishlists.FirstOrDefault(w => w.EmployeeId == employee.Id);
-                        if (wishlist == null) continue;
+                        if (wishlist == null) 
+                            continue;
                         var rating = wishlist.DesiredEmployees;
                         int teammateId = (employee is TeamLead ? j.Id : t.Id);
                         int teammateIndex = Array.FindIndex(rating, id => id == teammateId);
-                        if (teammateIndex == -1) continue;
+                        if (teammateIndex == -1) 
+                            continue;
                         indexes[employee.Id] = employees.Count() - teammateIndex;
                     }
                 }
