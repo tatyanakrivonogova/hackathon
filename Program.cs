@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection; 
-using Microsoft.Extensions.Hosting; 
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.Strategies;
@@ -14,7 +14,8 @@ namespace Nsu.HackathonProblem.HackathonProblem
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
-                    // services.Configure<Constants>(context.Configuration.GetSection("Constants"));
+                    services.AddOptions<ConstantOptions>().Bind
+                        (context.Configuration.GetSection("Constants"));
                     services.AddHostedService<ExperimentWorker>()
                     .AddSingleton<Experiment>()
                     .AddTransient<Hackathon>()
