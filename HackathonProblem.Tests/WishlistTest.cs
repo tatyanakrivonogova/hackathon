@@ -9,13 +9,17 @@ public class WishlistTest
     [Fact]
     public void WishlistSizeTest()
     {
+        // Arrange
         string juniorsFile = "Juniors5.csv";
         string teamLeadsFile = "Teamleads5.csv";
         var juniors = EmployeesReader.ReadJuniors(juniorsFile);
         var teamLeads = EmployeesReader.ReadTeamLeads(teamLeadsFile);
+
+        // Act
         IEnumerable<Wishlist> juniorsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
         IEnumerable<Wishlist> teamleadsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
         
+        // Assert
         foreach (Employee junior in juniors)
         {
             var wishlist = juniorsWishlists.FirstOrDefault(w => w.EmployeeId == junior.Id);
@@ -33,13 +37,17 @@ public class WishlistTest
     [Fact]
     public void WishlistContentTest()
     {
+        // Arrange
         string juniorsFile = "Juniors5.csv";
         string teamLeadsFile = "Teamleads5.csv";
         var juniors = EmployeesReader.ReadJuniors(juniorsFile);
         var teamLeads = EmployeesReader.ReadTeamLeads(teamLeadsFile);
+
+        // Act
         IEnumerable<Wishlist> juniorsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
         IEnumerable<Wishlist> teamleadsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
         
+        // Assert
         foreach (Employee junior in juniors)
         {
             var wishlist = juniorsWishlists.FirstOrDefault(w => w.EmployeeId == junior.Id);

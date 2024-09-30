@@ -12,6 +12,7 @@ public class HRManagerTest
     [Fact]
     public void HRManagerTeamsCountTest()
     {
+        // Arrange
         string juniorsFile = "Juniors5.csv";
         string teamLeadsFile = "Teamleads5.csv";
         var juniors = EmployeesReader.ReadJuniors(juniorsFile);
@@ -19,8 +20,11 @@ public class HRManagerTest
         IEnumerable<Wishlist> juniorsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
         IEnumerable<Wishlist> teamLeadsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
         HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
+
+        // Act
         var teams = manager.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists);
 
+        // Assert
         Assert.Equal(juniors.Count(), teams.Count());
         Assert.Equal(teamLeads.Count(), teams.Count());
     }
@@ -28,6 +32,7 @@ public class HRManagerTest
     [Fact]
     public void HRManagerTeamsContentTest()
     {
+        // Arrange
         string juniorsFile = "Juniors5.csv";
         string teamLeadsFile = "Teamleads5.csv";
         var juniors = EmployeesReader.ReadJuniors(juniorsFile);
@@ -50,7 +55,11 @@ public class HRManagerTest
         IEnumerable<Wishlist> teamLeadsWishlists = teamLeadsDesiredEmployees;
 
         HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
+
+        // Act
         var teams = manager.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists);
+
+        // Assert
         List<Team> teamsArray = teams.ToList();
         Assert.Equal(1, teamsArray[0].TeamLead.Id);
         Assert.Equal(2, teamsArray[0].Junior.Id);
@@ -67,6 +76,7 @@ public class HRManagerTest
     [Fact]
     public void HRManagerCallStrategyOneTimeTest()
     {
+        // Arrange
         string juniorsFile = "Juniors5.csv";
         string teamLeadsFile = "Teamleads5.csv";
         var juniors = EmployeesReader.ReadJuniors(juniorsFile);
@@ -75,8 +85,11 @@ public class HRManagerTest
         IEnumerable<Wishlist> teamLeadsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
         var mock = new Mock<ITeamBuildingStrategy>();
         HRManager manager = new HRManager(mock.Object);
+
+        // Act
         var teams = manager.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists);
 
+        // Assert
         mock.Verify(x => x.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists), Times.Once());
     }
 
