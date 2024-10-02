@@ -13,7 +13,6 @@ public class HRDirectorTest
     public void HRdirectorCountAverageHarmonicOfEqual()
     {
         // Arrange
-        double tolerance = 0.00001;
         List<int> indexes = new List<int>();
         int n = 10;
         int index = 5;
