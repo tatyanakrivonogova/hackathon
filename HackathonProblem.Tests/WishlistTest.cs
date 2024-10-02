@@ -46,25 +46,27 @@ public class WishlistTest
         // Act
         IEnumerable<Wishlist> juniorsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
         IEnumerable<Wishlist> teamleadsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
+
+        HashSet<int> teamleadsIds = new HashSet<int>(teamLeads.Select(e => e.Id));
+        HashSet<int> juniorsIds = new HashSet<int>(juniors.Select(e => e.Id));
+        IEnumerable<int> commonTeamleadsIds = teamleadsIds;
+        IEnumerable<int> commonJuniorsIds = juniorsIds;
+        
+        // get intersect of all juniors from teamleads' wishlists
+        foreach (Wishlist wishlist in teamleadsWishlists)
+        {
+            HashSet<int> juniorsFromWishlist = new HashSet<int>(wishlist.DesiredEmployees);
+            commonJuniorsIds = commonJuniorsIds.Intersect(juniorsFromWishlist);
+        }
+        // get intersect of all teamleads from juniors' wishlists
+        foreach (Wishlist wishlist in juniorsWishlists)
+        {
+            HashSet<int> teamleadsFromWishlist = new HashSet<int>(wishlist.DesiredEmployees);
+            commonTeamleadsIds = commonTeamleadsIds.Intersect(teamleadsFromWishlist);
+        }
         
         // Assert
-        foreach (Employee junior in juniors)
-        {
-            var wishlist = juniorsWishlists.FirstOrDefault(w => w.EmployeeId == junior.Id);
-            Assert.NotNull(wishlist);
-            foreach (Employee teamLead in teamLeads)
-            {
-                Assert.Contains(teamLead.Id, wishlist.DesiredEmployees);
-            }
-        }
-        foreach (Employee teamLead in teamLeads)
-        {
-            var wishlist = teamleadsWishlists.FirstOrDefault(w => w.EmployeeId == teamLead.Id);
-            Assert.NotNull(wishlist);
-            foreach (Employee junior in juniors)
-            {
-                Assert.Contains(junior.Id, wishlist.DesiredEmployees);
-            }
-        }
+        Assert.True(commonTeamleadsIds.SequenceEqual(teamleadsIds));
+        Assert.True(commonJuniorsIds.SequenceEqual(juniorsIds));
     }
 }
