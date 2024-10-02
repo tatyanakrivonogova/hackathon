@@ -7,7 +7,7 @@ namespace HackathonProblem.Tests;
 public class WishlistTest
 {
     [Fact]
-    public void WishlistSizeTest()
+    public void GenerateWishlists_FillWishlistsWithRandomEmployeesOrder_WishlistsSizesIsEqualToEmployeesNumber()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";
@@ -35,7 +35,7 @@ public class WishlistTest
     }
 
     [Fact]
-    public void WishlistContentTest()
+    public void GenerateWishlists_FillWishlistsWithRandomEmployeesOrder_WishlistsContainAllEmployees()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";

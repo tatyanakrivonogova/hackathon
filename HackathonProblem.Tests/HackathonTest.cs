@@ -10,7 +10,7 @@ namespace HackathonProblem.Tests;
 public class HackathonTest
 {
     [Fact]
-    public void HackathonScoreTest()
+    public void RunHackathon_RunHackathonWithSpecifiedWishlists_ScoreIsEqualToAveragwHarmonicOfEmployees()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";

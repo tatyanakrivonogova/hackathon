@@ -10,7 +10,7 @@ namespace HackathonProblem.Tests;
 public class HRManagerTest
 {
     [Fact]
-    public void HRManagerTeamsCountTest()
+    public void BuildTeams_BuildTeamsDueToSpecifiedWishlists_TeamsCountIsEqualToEmployeesCount()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";
@@ -30,7 +30,7 @@ public class HRManagerTest
     }
 
     [Fact]
-    public void HRManagerTeamsContentTest()
+    public void BuildTeams_BuildTeamsDueToSpecifiedWishlists_TeamsContainPairsDueToAlgorithm()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";
@@ -61,7 +61,7 @@ public class HRManagerTest
     }
 
     [Fact]
-    public void HRManagerCallStrategyOneTimeTest()
+    public void BuildTeams_BuildTeamsDueToSpecifiedWishlists_MethodIsCalledOnce()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";

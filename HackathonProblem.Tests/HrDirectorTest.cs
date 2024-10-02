@@ -10,7 +10,7 @@ namespace HackathonProblem.Tests;
 public class HRDirectorTest
 {
     [Fact]
-    public void HRdirectorCountAverageHarmonicOfEqual()
+    public void CountAverageHarmonic_CountAverageHarmonicOfTheSameNumber_AverageHarmonicIsEqualToNumbers()
     {
         // Arrange
         List<int> indexes = new List<int>();
@@ -30,7 +30,7 @@ public class HRDirectorTest
     }
 
     [Fact]
-    public void HRdirectorCountAverageHarmonic()
+    public void CountAverageHarmonic_CountAverageHarmonicOfTwoFixNumbers_ResultIsEqualToAverageHarmonic()
     {
         // Arrange
         List<int> indexes = new List<int>();
@@ -46,7 +46,7 @@ public class HRDirectorTest
     }
 
     [Fact]
-    public void HRdirectorCountScoreTest()
+    public void CountScore_CountAvergeHarmonicForBuiltTeams_ResultIsEqualToAverageHarmonic()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";
