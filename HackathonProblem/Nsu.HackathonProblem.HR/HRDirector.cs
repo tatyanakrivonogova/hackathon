@@ -48,7 +48,8 @@ namespace Nsu.HackathonProblem.HR
             foreach (int index in allIndexes)
                 if (index != 0.0)
                     sum += 1.0 / index;
-
+            if (sum == 0.0)
+                throw new ArgumentException("All indexes are zero. Average harmonic is undefined");
             return (allIndexes.Count()) / sum;
         }
     }

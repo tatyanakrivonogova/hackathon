@@ -81,7 +81,7 @@ public class HRManagerTest
     }
 
     [Fact]
-    public void BuildTeams_BuildTeamsOfDifferentNumbersOfEmployees_ThtowsException()
+    public void BuildTeams_BuildTeamsOfDifferentNumbersOfEmployees_ThtowsArgumentException()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";

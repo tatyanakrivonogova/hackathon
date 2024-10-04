@@ -31,4 +31,25 @@ public class HackathonTest
         // Assert
         Assert.Equal(60.0 / 23, score);
     }
+
+    [Fact]
+    public void RunHackathon_RunHackathonWithDifferentNumbersOfEmployees_ThrowsArgumentException()
+    {
+        // Arrange
+        string juniorsFile = "Juniors20.csv";
+        string teamLeadsFile = "Teamleads5.csv";
+        var juniors = EmployeesReader.ReadJuniors(juniorsFile);
+        var teamLeads = EmployeesReader.ReadTeamLeads(teamLeadsFile);
+
+        IEnumerable<Wishlist> juniorsWishlists = TestDataInitializer.GetJuniorsWishlist();
+        IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist();
+
+        HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
+        HRDirector director = new HRDirector();
+        Hackathon hackathon = new Hackathon();
+        Action throwingAction = () => { hackathon.RunHackathon(manager, director, teamLeads, juniors, teamLeadsWishlists, juniorsWishlists); };
+    
+        // Assert
+        Assert.Throws<ArgumentException>(throwingAction);
+    }
 }

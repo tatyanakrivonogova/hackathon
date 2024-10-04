@@ -30,6 +30,25 @@ public class HRDirectorTest
     }
 
     [Fact]
+    public void CountAverageHarmonic_CountAverageHarmonicOfZeros_ReturnOne()
+    {
+        // Arrange
+        List<int> indexes = new List<int>();
+        int n = 10;
+        for (int i = 0; i < n; ++i)
+        {
+            indexes.Add(0);
+        }
+        HRDirector director = new HRDirector();
+
+        // Act
+        Action throwingAction = () => { director.CountAverageHarmonic(indexes); };
+    
+        // Assert
+        Assert.Throws<ArgumentException>(throwingAction);
+    }
+
+    [Fact]
     public void CountAverageHarmonic_CountAverageHarmonicOfTwoFixNumbers_ResultIsEqualToAverageHarmonic()
     {
         // Arrange
