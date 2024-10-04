@@ -29,6 +29,6 @@ public class HackathonTest
         double score = hackathon.RunHackathon(manager, director, teamLeads, juniors, teamLeadsWishlists, juniorsWishlists);
 
         // Assert
-        Assert.Equal(60.0/23, score);
+        Assert.Equal(60.0 / 23, score);
     }
 }

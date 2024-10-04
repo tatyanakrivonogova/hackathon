@@ -80,4 +80,21 @@ public class HRManagerTest
         mock.Verify(x => x.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists), Times.Once());
     }
 
+    [Fact]
+    public void BuildTeams_BuildTeamsOfDifferentNumbersOfEmployees_ThtowsException()
+    {
+        // Arrange
+        string juniorsFile = "Juniors5.csv";
+        string teamLeadsFile = "Teamleads20.csv";
+        var juniors = EmployeesReader.ReadJuniors(juniorsFile);
+        var teamLeads = EmployeesReader.ReadTeamLeads(teamLeadsFile);
+        IEnumerable<Wishlist> juniorsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
+        IEnumerable<Wishlist> teamLeadsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);
+        HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
+        Action throwingAction = () => { manager.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists); };
+    
+        // Assert
+        Assert.Throws<ArgumentException>(throwingAction);
+    }
+
 }

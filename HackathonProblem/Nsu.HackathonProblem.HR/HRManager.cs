@@ -9,6 +9,8 @@ namespace Nsu.HackathonProblem.HR
         public IEnumerable<Team> BuildTeams(IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors,
             IEnumerable<Wishlist> teamLeadsWishlists, IEnumerable<Wishlist> juniorsWishlists)
         {
+            if (teamLeads.Count() != juniors.Count())
+                throw new ArgumentException("The number of teamleads and juniors should be the same");
             return strategy.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists);
         }
     }
