@@ -13,5 +13,19 @@ namespace Nsu.HackathonProblem.DataTransfer
                 context.SaveChanges();
             }
         }
+
+        public List<Hackathon> loadData()
+        {
+            using (var context = new HackathonContext())
+            {
+                var hackathonDtos = context.Hackathon.ToList();
+                var hackathons = new List<Hackathon>();
+                foreach (var hackathonDto in hackathonDtos)
+                {
+                    hackathons.Add(Mapper.MapHackathonDtoToHackathon(hackathonDto));
+                }
+                return hackathons;
+            }
+        }
     }
 }

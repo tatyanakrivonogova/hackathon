@@ -3,8 +3,8 @@ namespace Nsu.HackathonProblem.Dto;
 public class HackathonDto()
 {
     public int Id { get; set; }
-    public double Score { get; init; }
-    required public IEnumerable<EmployeeDto> Participants { get; init; }
-    required public IEnumerable<WishlistDto> Wishlists { get; init; }
-    required public IEnumerable<TeamDto> Teams { get; init; }
+    public double Score { get; set; }
+    required public IEnumerable<EmployeeDto> Employees { get; set; }
+    required public IEnumerable<WishlistDto> Wishlists { get; set; }
+    required public IEnumerable<TeamDto> Teams { get; set; }
 }
