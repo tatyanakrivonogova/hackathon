@@ -1,0 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+namespace Nsu.HackathonProblem.Dto;
+
+public class WishlistDto()
+{
+    [Key] public int Ident { get; set; }
+    public int EmployeeId { get; set; }
+    required public int[] DesiredEmployees { get; set; }
+}
