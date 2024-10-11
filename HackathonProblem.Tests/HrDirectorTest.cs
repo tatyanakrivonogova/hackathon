@@ -9,13 +9,14 @@ namespace HackathonProblem.Tests;
 
 public class HRDirectorTest
 {
-    [Fact]
-    public void CountAverageHarmonic_CountAverageHarmonicOfTheSameNumber_AverageHarmonicIsEqualToNumbers()
+    [Theory]
+    [InlineData(10, 5)]
+    [InlineData(1, 5)]
+    [InlineData(100, 7)]
+    public void CountHarmonicMean_CountHarmonicMeanOfTheSameNumber_HarmonicMeanIsEqualToNumbers(int n, int index)
     {
         // Arrange
         List<int> indexes = new List<int>();
-        int n = 10;
-        int index = 5;
         for (int i = 0; i < n; ++i)
         {
             indexes.Add(index);
@@ -23,18 +24,19 @@ public class HRDirectorTest
         HRDirector director = new HRDirector();
 
         // Act
-        double averageHarmonic = director.CountAverageHarmonic(indexes);
+        double harmonicMean = HarmonicMeanCounter.CountHarmonicMean(indexes);
 
         // Assert
-        Assert.Equal(Convert.ToDouble(index), averageHarmonic, 14);
+        Assert.Equal(Convert.ToDouble(index), harmonicMean, 13);
     }
 
-    [Fact]
-    public void CountAverageHarmonic_CountAverageHarmonicOfZeros_ReturnOne()
+    [Theory]
+    [InlineData(10)]
+    [InlineData(100)]
+    public void CountHarmonicMean_CountHarmonicMeanOfZeros_ReturnOne(int n)
     {
         // Arrange
         List<int> indexes = new List<int>();
-        int n = 10;
         for (int i = 0; i < n; ++i)
         {
             indexes.Add(0);
@@ -42,30 +44,31 @@ public class HRDirectorTest
         HRDirector director = new HRDirector();
 
         // Act
-        Action throwingAction = () => { director.CountAverageHarmonic(indexes); };
+        Action throwingAction = () => { HarmonicMeanCounter.CountHarmonicMean(indexes); };
     
         // Assert
         Assert.Throws<ArgumentException>(throwingAction);
     }
 
-    [Fact]
-    public void CountAverageHarmonic_CountAverageHarmonicOfTwoFixNumbers_ResultIsEqualToAverageHarmonic()
+    [Theory]
+    [InlineData(2, 6, 3.0)]
+    [InlineData(2, 8, 3.2)]
+    [InlineData(20, 180, 36)]
+    public void CountHarmonicMean_CountHarmonicMeanOfTwoFixNumbers_ResultIsEqualToHarmonicMean(int a, int b, double result)
     {
         // Arrange
-        List<int> indexes = new List<int>();
-        indexes.Add(2);
-        indexes.Add(6);
+        List<int> indexes = new List<int>() {a, b};
         HRDirector director = new HRDirector();
 
         // Act
-        double averageHarmonic = director.CountAverageHarmonic(indexes);
+        double harmonicMean = HarmonicMeanCounter.CountHarmonicMean(indexes);
 
         // Assert
-        Assert.Equal(3.0, averageHarmonic, 14);
+        Assert.Equal(result, harmonicMean, 14);
     }
 
     [Fact]
-    public void CountScore_CountAvergeHarmonicForBuiltTeams_ResultIsEqualToAverageHarmonic()
+    public void CountScore_CountHarmonicMeanForBuiltTeams_ResultIsEqualToHarmonicMean()
     {
         // Arrange
         string juniorsFile = "Juniors5.csv";

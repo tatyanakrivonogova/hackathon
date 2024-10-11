@@ -32,8 +32,33 @@ class Experiment(Hackathon hackathon, HRDirector director, HRManager manager,
 
         }
 
-        Console.WriteLine($"Average score: {sumScore / options.hackathonRepeats}");
+        Console.WriteLine($"Average score for {options.hackathonRepeats} hackathons: {sumScore / options.hackathonRepeats}");
 
-        // List<Hackathon> allHackathons = dataTransfer.loadData();
+        List<Hackathon> allHackathons = dataTransfer.loadData();
+        double allScoresSum = 0.0;
+        foreach (Hackathon hackathon in allHackathons)
+        {
+            allScoresSum += hackathon.Score;
+        }
+        Console.WriteLine($"Average score for all {allHackathons.Count()} hackathons: {allScoresSum / allHackathons.Count()}");
+        // Hackathon first = allHackathons[0];
+        // Console.WriteLine("----------------------------------");
+        // Console.WriteLine($"Hackathon: {first.Id}, score: {first.Score}");
+        // foreach (var j in first.Juniors)
+        // {
+        //     Console.WriteLine($"junior: {j.Id}, name: {j.Name}");
+        // }
+        // foreach (var t in first.TeamLeads)
+        // {
+        //     Console.WriteLine($"teamlead: {t.Id}, name: {t.Name}");
+        // }
+        // foreach (var w in first.Wishlists)
+        // {
+        //     Console.WriteLine($"wishlist: {w.EmployeeId}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
+        // }
+        // foreach (var t in first.Teams)
+        // {
+        //     Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
+        // }
     }
 }

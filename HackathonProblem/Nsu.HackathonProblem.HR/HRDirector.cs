@@ -1,4 +1,5 @@
 using Nsu.HackathonProblem.Contracts;
+using Nsu.HackathonProblem.Utils;
 
 namespace Nsu.HackathonProblem.HR
 {
@@ -11,7 +12,7 @@ namespace Nsu.HackathonProblem.HR
             List<int> allIndexes = CountSatisfactionIndexes(juniors, teams, juniorsWishlists).ToList();
             allIndexes.AddRange(CountSatisfactionIndexes(teamLeads, teams, teamLeadsWishlists).ToList());
 
-            return CountAverageHarmonic(allIndexes);
+            return HarmonicMeanCounter.CountHarmonicMean(allIndexes);
         }
 
         private int[] CountSatisfactionIndexes(IEnumerable<Employee> employees, IEnumerable<Team> teams, IEnumerable<Wishlist> wishlists)
@@ -40,17 +41,6 @@ namespace Nsu.HackathonProblem.HR
                 }
             }
             return indexes;
-        }
-
-        public double CountAverageHarmonic(List<int> allIndexes)
-        {
-            double sum = 0.0;
-            foreach (int index in allIndexes)
-                if (index != 0.0)
-                    sum += 1.0 / index;
-            if (sum == 0.0)
-                throw new ArgumentException("All indexes are zero. Average harmonic is undefined");
-            return (allIndexes.Count()) / sum;
         }
     }
 }

@@ -22,6 +22,18 @@ namespace Nsu.HackathonProblem.DataTransfer
                 var hackathons = new List<Hackathon>();
                 foreach (var hackathonDto in hackathonDtos)
                 {
+                    hackathonDto.Employees = context.Employee
+                                             .ToList()
+                                             .Where(e => e.HackathonId == hackathonDto.Id)
+                                             .ToList();
+                    hackathonDto.Wishlists = context.Wishlist
+                                             .ToList()
+                                             .Where(w => w.HackathonId == hackathonDto.Id)
+                                             .ToList();
+                    hackathonDto.Teams = context.Team
+                                             .ToList()
+                                             .Where(t => t.HackathonId == hackathonDto.Id)
+                                             .ToList();
                     hackathons.Add(Mapper.MapHackathonDtoToHackathon(hackathonDto));
                 }
                 return hackathons;

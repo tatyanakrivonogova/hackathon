@@ -81,9 +81,10 @@ public static class Mapper
         hackathon.Id = hackathonDto.Id;
         hackathon.Score = hackathonDto.Score;
 
+        // map employess
         var juniors = new List<Junior>();
         var teamLeads = new List<TeamLead>();
-        Console.WriteLine($"----------------{hackathonDto.Employees}----------------");
+        // Console.WriteLine($"----------------{hackathonDto.Employees}----------------");
         foreach (var e in hackathonDto.Employees)
         {
             if (e.Role == "Junior")
@@ -97,6 +98,22 @@ public static class Mapper
         }
         hackathon.Juniors = juniors;
         hackathon.TeamLeads = teamLeads;
+
+        //  map wishlists
+        var wishlists = new List<Wishlist>();
+        foreach (var w in hackathonDto.Wishlists)
+        {
+            wishlists.Add(MapWishlistDtoToWishlist(w));
+        }
+        hackathon.Wishlists = wishlists;
+
+        //  map teams
+        var teams = new List<Team>();
+        foreach (var t in hackathonDto.Teams)
+        {
+            teams.Add(MapTeamDtoToTeam(t));
+        }
+        hackathon.Teams = teams;
         return hackathon;
     }
 
@@ -120,7 +137,9 @@ public static class Mapper
 
     public static Team MapTeamDtoToTeam(TeamDto teamDto)
     {
-        var team = teamDto.Adapt<Team>();
-        return team;
+        // var team = teamDto.Adapt<Team>();
+
+        return new Team(new Junior(teamDto.JuniorId, ""), 
+                        new TeamLead(teamDto.TeamLeadId, ""));
     }
 }
