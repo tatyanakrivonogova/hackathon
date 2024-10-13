@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Options;
 using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.Dto;
 
@@ -5,11 +6,17 @@ namespace Nsu.HackathonProblem.DataTransfer
 {
     public class DatabaseDataTransfer : IDataTransfer
     {
+        HackathonOptions options;
+        public DatabaseDataTransfer(IOptions<HackathonOptions> hackathonOptions)
+        {
+            options = hackathonOptions.Value;
+        }
+        
         private List<EmployeeDto> employeesList;
         public void saveData(List<Employee> juniors, List<Employee> teamleads)
         {
             Mapper.Initialize();
-            using (var context = new HackathonContext())
+            using (var context = new HackathonContext(options.database))
             {
                 employeesList = new List<EmployeeDto>();
                 foreach (var j in juniors)
@@ -29,7 +36,7 @@ namespace Nsu.HackathonProblem.DataTransfer
         public void saveData(Hackathon hackathon)
         {
             Mapper.Initialize();
-            using (var context = new HackathonContext())
+            using (var context = new HackathonContext(options.database))
             {
                 context.Hackathon.Add(Mapper.MapHackathonToHackathonDto(hackathon, employeesList));
                 context.SaveChanges();
@@ -38,7 +45,7 @@ namespace Nsu.HackathonProblem.DataTransfer
 
         public List<Hackathon> loadData()
         {
-            using (var context = new HackathonContext())
+            using (var context = new HackathonContext(options.database))
             {
                 var hackathonDtos = context.Hackathon.ToList();
                 var hackathons = new List<Hackathon>();

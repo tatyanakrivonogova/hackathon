@@ -5,20 +5,22 @@ using Nsu.HackathonProblem.Dto;
 
 public class HackathonContext : DbContext
 {
+    string configuration;
     public DbSet<HackathonDto> Hackathon { get; init; }
     public DbSet<EmployeeDto> Employee { get; init; }
     public DbSet<ParticipantDto> Participant { get; init; }
     public DbSet<WishlistDto> Wishlist { get; init; }
     public DbSet<TeamDto> Team { get; init; }
 
-    public HackathonContext()
+    public HackathonContext(string database)
     {
+        configuration = database;
         Database.EnsureCreated();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=hackathon;Username=postgres;Password=postgres")
+        optionsBuilder.UseNpgsql(configuration)
                   .LogTo(Console.WriteLine, LogLevel.Information);
     }
 
