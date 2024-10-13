@@ -1,15 +1,37 @@
 using Nsu.HackathonProblem.Contracts;
+using Nsu.HackathonProblem.Dto;
 
 namespace Nsu.HackathonProblem.DataTransfer
 {
     public class DatabaseDataTransfer : IDataTransfer
     {
+        private List<EmployeeDto> employeesList;
+        public void saveData(List<Employee> juniors, List<Employee> teamleads)
+        {
+            Mapper.Initialize();
+            using (var context = new HackathonContext())
+            {
+                employeesList = new List<EmployeeDto>();
+                foreach (var j in juniors)
+                {
+                    employeesList.Add(Mapper.MapJuniorToEmployeeDto(j));
+                }
+                
+                foreach (var t in teamleads)
+                {
+                    employeesList.Add(Mapper.MapTeamLeadToEmployeeDto(t));
+                }
+                context.Employee.AddRange(employeesList);
+                context.SaveChanges();
+            }
+        }
+
         public void saveData(Hackathon hackathon)
         {
             Mapper.Initialize();
             using (var context = new HackathonContext())
             {
-                context.Hackathon.Add(Mapper.MapHackathonToHackathonDto(hackathon));
+                context.Hackathon.Add(Mapper.MapHackathonToHackathonDto(hackathon, employeesList));
                 context.SaveChanges();
             }
         }
@@ -20,9 +42,12 @@ namespace Nsu.HackathonProblem.DataTransfer
             {
                 var hackathonDtos = context.Hackathon.ToList();
                 var hackathons = new List<Hackathon>();
+                var employees = context.Employee
+                                             .ToList();
+
                 foreach (var hackathonDto in hackathonDtos)
                 {
-                    hackathonDto.Employees = context.Employee
+                    hackathonDto.Participants = context.Participant
                                              .ToList()
                                              .Where(e => e.HackathonId == hackathonDto.Id)
                                              .ToList();
@@ -34,7 +59,7 @@ namespace Nsu.HackathonProblem.DataTransfer
                                              .ToList()
                                              .Where(t => t.HackathonId == hackathonDto.Id)
                                              .ToList();
-                    hackathons.Add(Mapper.MapHackathonDtoToHackathon(hackathonDto));
+                    hackathons.Add(Mapper.MapHackathonDtoToHackathon(hackathonDto, employees));
                 }
                 return hackathons;
             }

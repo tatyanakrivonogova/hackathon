@@ -7,6 +7,7 @@ public class HackathonContext : DbContext
 {
     public DbSet<HackathonDto> Hackathon { get; init; }
     public DbSet<EmployeeDto> Employee { get; init; }
+    public DbSet<ParticipantDto> Participant { get; init; }
     public DbSet<WishlistDto> Wishlist { get; init; }
     public DbSet<TeamDto> Team { get; init; }
 
@@ -23,19 +24,34 @@ public class HackathonContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<EmployeeDto>()
-            .HasKey(e => new { e.Id, e.Name, e.Role, e.HackathonId });
+        // modelBuilder.Entity<EmployeeDto>()
+        //     .HasKey(e => new { e.Id, e.Name, e.Role, e.HackathonId });
+
+        modelBuilder.Entity<ParticipantDto>()
+            .HasKey(p => new { p.EmployeePk, p.HackathonId });
         
-        modelBuilder.Entity<WishlistDto>()
-            .HasKey(w => new { w.EmployeeId, w.DesiredEmployees, w.HackathonId });
+        // modelBuilder.Entity<WishlistDto>()
+        //     .HasKey(w => new { w.EmployeeId, w.DesiredEmployees, w.HackathonId });
 
         modelBuilder.Entity<TeamDto>()
             .HasKey(t => new { t.TeamLeadId, t.JuniorId, t.HackathonId });
 
-        modelBuilder.Entity<EmployeeDto>()
-            .HasOne(e => e.Hackathon)
-            .WithMany(h => h.Employees)
-            .HasForeignKey(e => e.HackathonId)
+        // modelBuilder.Entity<EmployeeDto>()
+        //     .HasOne(e => e.Hackathon)
+        //     .WithMany(h => h.Employees)
+        //     .HasForeignKey(e => e.HackathonId)
+        //     .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ParticipantDto>()
+            .HasOne(p => p.Employee)
+            .WithMany()
+            .HasForeignKey(p => p.EmployeePk)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<ParticipantDto>()
+            .HasOne(p => p.Hackathon)
+            .WithMany(h => h.Participants)
+            .HasForeignKey(p => p.HackathonId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<WishlistDto>()

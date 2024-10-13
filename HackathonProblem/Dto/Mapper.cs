@@ -14,19 +14,19 @@ public static class Mapper
         TypeAdapterConfig<Team, TeamDto>.NewConfig();
     }
 
-    public static HackathonDto MapHackathonToHackathonDto(Hackathon hackathon)
+    public static HackathonDto MapHackathonToHackathonDto(Hackathon hackathon, List<EmployeeDto> employeesList)
     {
-        // map employees
-        var employeesList = new List<EmployeeDto>();
+        // map participants
+        var participantsList = new List<ParticipantDto>();
         foreach (var j in hackathon.Juniors)
         {
-            employeesList.Add(MapJuniorToEmployeeDto(j));
+            participantsList.Add(MapJuniorToParticipantDto(j, employeesList));
         }
 
-        var TeamleadsList = new List<EmployeeDto>();
+        var TeamleadsList = new List<ParticipantDto>();
         foreach (var t in hackathon.TeamLeads)
         {
-            employeesList.Add(MapTeamLeadToEmployeeDto(t));
+            participantsList.Add(MapTeamLeadToParticipantDto(t, employeesList));
         }
 
         // map wishlists
@@ -44,7 +44,7 @@ public static class Mapper
         }
         return new HackathonDto {
             Score = hackathon.Score, 
-            Employees = employeesList, 
+            Participants = participantsList, 
             Wishlists = wishlistsList, 
             Teams = teamsList };
     }
@@ -61,6 +61,20 @@ public static class Mapper
         var employeeDto = teamlead.Adapt<EmployeeDto>();
         employeeDto.Role = "TeamLead";
         return employeeDto;
+    }
+
+    public static ParticipantDto MapJuniorToParticipantDto(Employee junior, List<EmployeeDto> employeesList)
+    {
+        var participantDto = new ParticipantDto();
+        participantDto.EmployeePk = employeesList.Where(e => e.Role == "Junior" && e.Id == junior.Id).FirstOrDefault().EmployeePk;
+        return participantDto;
+    }
+
+    public static ParticipantDto MapTeamLeadToParticipantDto(Employee teamlead, List<EmployeeDto> employeesList)
+    {
+        var participantDto = new ParticipantDto();
+        participantDto.EmployeePk = employeesList.Where(e => e.Role == "TeamLead" && e.Id == teamlead.Id).FirstOrDefault().EmployeePk;
+        return participantDto;
     }
 
     public static WishlistDto MapWishlistToWishlistDto(Wishlist wishlist)
@@ -82,7 +96,7 @@ public static class Mapper
         return teamDto;
     }
 
-    public static Hackathon MapHackathonDtoToHackathon(HackathonDto hackathonDto)
+    public static Hackathon MapHackathonDtoToHackathon(HackathonDto hackathonDto, List<EmployeeDto> employees)
     {
         var hackathon = new Hackathon();
         hackathon.Id = hackathonDto.Id;
@@ -92,15 +106,16 @@ public static class Mapper
         var juniors = new List<Junior>();
         var teamLeads = new List<TeamLead>();
         // Console.WriteLine($"----------------{hackathonDto.Employees}----------------");
-        foreach (var e in hackathonDto.Employees)
+        foreach (var p in hackathonDto.Participants)
         {
-            if (e.Role == "Junior")
+            p.Employee = employees.FirstOrDefault(e => e.EmployeePk == p.EmployeePk);
+            if (p.Employee.Role == "Junior")
             {
-                juniors.Add(MapEmployeeDtoToJunior(e));
+                juniors.Add(MapEmployeeDtoToJunior(p.Employee));
             }
-            if (e.Role == "TeamLead")
+            if (p.Employee.Role == "TeamLead")
             {
-                teamLeads.Add(MapEmployeeDtoToTeamLead(e));
+                teamLeads.Add(MapEmployeeDtoToTeamLead(p.Employee));
             }
         }
         hackathon.Juniors = juniors;
@@ -144,10 +159,10 @@ public static class Mapper
 
     public static Team MapTeamDtoToTeam(TeamDto teamDto)
     {
-        var team = teamDto.Adapt<Team>();
-        return team;
+        // var team = teamDto.Adapt<Team>();
+        // return team;
 
-        // return new Team(new Junior(teamDto.JuniorId, ""), 
-                        // new TeamLead(teamDto.TeamLeadId, ""));
+        return new Team(new Junior(teamDto.JuniorId, ""), 
+                        new TeamLead(teamDto.TeamLeadId, ""));
     }
 }

@@ -21,6 +21,8 @@ class Experiment(Hackathon hackathon, HRDirector director, HRManager manager,
         var teamLeads = EmployeesReader.ReadTeamLeads(options.teamLeadsFile);
         hackathon.TeamLeads = teamLeads;
 
+        dataTransfer.saveData(juniors.ToList(), teamLeads.ToList());
+
         double sumScore = 0.0;
         for (int i = 0; i < options.hackathonRepeats; i++)
         {
@@ -40,24 +42,25 @@ class Experiment(Hackathon hackathon, HRDirector director, HRManager manager,
             allScoresSum += hackathon.Score;
         }
         Console.WriteLine($"Average score for all {allHackathons.Count()} hackathons: {allScoresSum / allHackathons.Count()}");
-        // Hackathon first = allHackathons[0];
-        // Console.WriteLine("----------------------------------");
-        // Console.WriteLine($"Hackathon: {first.Id}, score: {first.Score}");
-        // foreach (var j in first.Juniors)
-        // {
-        //     Console.WriteLine($"junior: {j.Id}, name: {j.Name}");
-        // }
-        // foreach (var t in first.TeamLeads)
-        // {
-        //     Console.WriteLine($"teamlead: {t.Id}, name: {t.Name}");
-        // }
-        // foreach (var w in first.Wishlists)
-        // {
-        //     Console.WriteLine($"wishlist: {w.EmployeeId}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
-        // }
-        // foreach (var t in first.Teams)
-        // {
-        //     Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
-        // }
+        
+        Hackathon first = allHackathons.Where(h => h.Id == 7).FirstOrDefault();
+        Console.WriteLine("----------------------------------");
+        Console.WriteLine($"Hackathon: {first.Id}, score: {first.Score}");
+        foreach (var j in first.Juniors)
+        {
+            Console.WriteLine($"junior: {j.Id}, name: {j.Name}");
+        }
+        foreach (var t in first.TeamLeads)
+        {
+            Console.WriteLine($"teamlead: {t.Id}, name: {t.Name}");
+        }
+        foreach (var w in first.Wishlists)
+        {
+            Console.WriteLine($"wishlist: {w.EmployeeId}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
+        }
+        foreach (var t in first.Teams)
+        {
+            Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
+        }
     }
 }
