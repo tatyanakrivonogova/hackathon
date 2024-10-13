@@ -3,7 +3,7 @@ namespace Nsu.HackathonProblem.Dto;
 
 public class WishlistDto()
 {
-    [Key] public int Ident { get; set; }
+    // [Key] public int Ident { get; set; }
     public int EmployeeId { get; set; }
     required public int[] DesiredEmployees { get; set; }
     public int HackathonId { get; set; }

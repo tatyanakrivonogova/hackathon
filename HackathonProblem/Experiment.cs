@@ -29,7 +29,6 @@ class Experiment(Hackathon hackathon, HRDirector director, HRManager manager,
             Console.WriteLine($"score [i={i}]: {score}");
             sumScore += score;
             dataTransfer.saveData(hackathon);
-
         }
 
         Console.WriteLine($"Average score for {options.hackathonRepeats} hackathons: {sumScore / options.hackathonRepeats}");

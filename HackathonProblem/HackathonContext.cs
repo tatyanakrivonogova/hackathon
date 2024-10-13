@@ -17,12 +17,21 @@ public class HackathonContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=hackathon;Username=postgres;Password=postgres");
-                //   .LogTo(Console.WriteLine, LogLevel.Information);
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=hackathon;Username=postgres;Password=postgres")
+                  .LogTo(Console.WriteLine, LogLevel.Information);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<EmployeeDto>()
+            .HasKey(e => new { e.Id, e.Name, e.Role, e.HackathonId });
+        
+        modelBuilder.Entity<WishlistDto>()
+            .HasKey(w => new { w.EmployeeId, w.DesiredEmployees, w.HackathonId });
+
+        modelBuilder.Entity<TeamDto>()
+            .HasKey(t => new { t.TeamLeadId, t.JuniorId, t.HackathonId });
+
         modelBuilder.Entity<EmployeeDto>()
             .HasOne(e => e.Hackathon)
             .WithMany(h => h.Employees)

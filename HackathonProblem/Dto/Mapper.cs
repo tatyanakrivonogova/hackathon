@@ -71,7 +71,14 @@ public static class Mapper
 
     public static TeamDto MapTeamToTeamDto(Team team)
     {
-        var teamDto = team.Adapt<TeamDto>();
+        var teamDto = new TeamDto();
+        teamDto.JuniorId = team.Junior.Id;
+        teamDto.TeamLeadId = team.TeamLead.Id;
+        // var teamDto = team.Adapt<TeamDto>();
+
+        // var teamDto = new TeamDto();
+        // teamDto.TeamLead = MapTeamLeadToEmployeeDto(team.TeamLead);
+        // teamDto.Junior = MapJuniorToEmployeeDto(team.Junior);
         return teamDto;
     }
 
@@ -137,9 +144,10 @@ public static class Mapper
 
     public static Team MapTeamDtoToTeam(TeamDto teamDto)
     {
-        // var team = teamDto.Adapt<Team>();
+        var team = teamDto.Adapt<Team>();
+        return team;
 
-        return new Team(new Junior(teamDto.JuniorId, ""), 
-                        new TeamLead(teamDto.TeamLeadId, ""));
+        // return new Team(new Junior(teamDto.JuniorId, ""), 
+                        // new TeamLead(teamDto.TeamLeadId, ""));
     }
 }
