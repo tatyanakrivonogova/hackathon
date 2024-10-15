@@ -20,8 +20,8 @@ public class HackathonContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(configuration)
-                  .LogTo(Console.WriteLine, LogLevel.Information);
+        optionsBuilder.UseNpgsql(configuration);
+                //   .LogTo(Console.WriteLine, LogLevel.Information);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

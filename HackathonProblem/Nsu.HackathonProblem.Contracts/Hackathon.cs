@@ -8,14 +8,14 @@ namespace Nsu.HackathonProblem.Contracts
     {
         [Key] public int Id { get; set; }
         public double Score { get; set; }
-        public IEnumerable<Employee> TeamLeads { get; set; }
-        public IEnumerable<Employee> Juniors { get; set; }
-        public IEnumerable<Wishlist> Wishlists { get; set; }
-        public IEnumerable<Team> Teams { get; set; }
+        public IEnumerable<Employee>? TeamLeads { get; set; }
+        public IEnumerable<Employee>? Juniors { get; set; }
+        public IEnumerable<Wishlist>? Wishlists { get; set; }
+        public IEnumerable<Team>? Teams { get; set; }
         public double RunHackathon(HRManager manager, HRDirector director,
                 IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors,
-                IEnumerable<Wishlist> teamLeadsWishlists = null,
-                IEnumerable<Wishlist> juniorsWishlists = null)
+                IEnumerable<Wishlist>? teamLeadsWishlists = null,
+                IEnumerable<Wishlist>? juniorsWishlists = null)
         {
             // generate wishlists randomly
             if (juniorsWishlists == null) juniorsWishlists = WishlistGenerator.GenerateWishlists(juniors, teamLeads);

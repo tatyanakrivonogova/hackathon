@@ -16,6 +16,10 @@ public static class Mapper
 
     public static HackathonDto MapHackathonToHackathonDto(Hackathon hackathon, List<EmployeeDto> employeesList)
     {
+        if (hackathon.TeamLeads == null || hackathon.Juniors == null ||
+            hackathon.Wishlists == null || hackathon.Teams == null) {
+            throw new ArgumentException("Hackathon has empty fields");
+        }
         // map participants
         var participantsList = new List<ParticipantDto>();
         foreach (var j in hackathon.Juniors)
@@ -66,14 +70,22 @@ public static class Mapper
     public static ParticipantDto MapJuniorToParticipantDto(Employee junior, List<EmployeeDto> employeesList)
     {
         var participantDto = new ParticipantDto();
-        participantDto.EmployeePk = employeesList.Where(e => e.Role == "Junior" && e.Id == junior.Id).FirstOrDefault().EmployeePk;
+        EmployeeDto employee = employeesList.Where(e => e.Role == "Junior" && e.Id == junior.Id).FirstOrDefault();
+        if (employee == null) {
+            throw new ArgumentException("Employee for junior is not found");
+        }
+        participantDto.EmployeePk = employee.EmployeePk;
         return participantDto;
     }
 
     public static ParticipantDto MapTeamLeadToParticipantDto(Employee teamlead, List<EmployeeDto> employeesList)
     {
         var participantDto = new ParticipantDto();
-        participantDto.EmployeePk = employeesList.Where(e => e.Role == "TeamLead" && e.Id == teamlead.Id).FirstOrDefault().EmployeePk;
+        EmployeeDto employee = employeesList.Where(e => e.Role == "TeamLead" && e.Id == teamlead.Id).FirstOrDefault();
+        if (employee == null) {
+            throw new ArgumentException("Employee for teamlead is not found");
+        }
+        participantDto.EmployeePk = employee.EmployeePk;
         return participantDto;
     }
 
@@ -88,11 +100,6 @@ public static class Mapper
         var teamDto = new TeamDto();
         teamDto.JuniorId = team.Junior.Id;
         teamDto.TeamLeadId = team.TeamLead.Id;
-        // var teamDto = team.Adapt<TeamDto>();
-
-        // var teamDto = new TeamDto();
-        // teamDto.TeamLead = MapTeamLeadToEmployeeDto(team.TeamLead);
-        // teamDto.Junior = MapJuniorToEmployeeDto(team.Junior);
         return teamDto;
     }
 
@@ -105,10 +112,13 @@ public static class Mapper
         // map employess
         var juniors = new List<Junior>();
         var teamLeads = new List<TeamLead>();
-        // Console.WriteLine($"----------------{hackathonDto.Employees}----------------");
         foreach (var p in hackathonDto.Participants)
         {
             p.Employee = employees.FirstOrDefault(e => e.EmployeePk == p.EmployeePk);
+            if (p.Employee == null)
+            {
+                continue;
+            }
             if (p.Employee.Role == "Junior")
             {
                 juniors.Add(MapEmployeeDtoToJunior(p.Employee));

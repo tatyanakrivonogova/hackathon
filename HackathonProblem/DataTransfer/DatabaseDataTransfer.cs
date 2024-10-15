@@ -12,7 +12,7 @@ namespace Nsu.HackathonProblem.DataTransfer
             options = hackathonOptions.Value;
         }
         
-        private List<EmployeeDto> employeesList;
+        private List<EmployeeDto> employeesList = new List<EmployeeDto>();
         public void saveData(List<Employee> juniors, List<Employee> teamleads)
         {
             Mapper.Initialize();
@@ -49,8 +49,11 @@ namespace Nsu.HackathonProblem.DataTransfer
             {
                 var hackathonDtos = context.Hackathon.ToList();
                 var hackathons = new List<Hackathon>();
-                var employees = context.Employee
-                                             .ToList();
+                var employees = context.Employee.ToList();
+                if (employees == null)
+                {
+                    throw new ArgumentException("Employees was not loaded");
+                }
 
                 foreach (var hackathonDto in hackathonDtos)
                 {

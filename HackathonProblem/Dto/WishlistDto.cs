@@ -7,5 +7,5 @@ public class WishlistDto()
     public int EmployeeId { get; set; }
     required public int[] DesiredEmployees { get; set; }
     public int HackathonId { get; set; }
-    public HackathonDto Hackathon { get; set; }
+    public HackathonDto? Hackathon { get; set; }
 }

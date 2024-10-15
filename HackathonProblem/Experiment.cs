@@ -43,24 +43,57 @@ class Experiment(Hackathon hackathon, HRDirector director, HRManager manager,
         }
         Console.WriteLine($"Average score for all {allHackathons.Count()} hackathons: {allScoresSum / allHackathons.Count()}");
         
-        Hackathon first = allHackathons.Where(h => h.Id == 7).FirstOrDefault();
-        Console.WriteLine("----------------------------------");
-        Console.WriteLine($"Hackathon: {first.Id}, score: {first.Score}");
-        foreach (var j in first.Juniors)
+        Hackathon? first = allHackathons.Where(h => h.Id == 9).FirstOrDefault();
+        if (first != null)
         {
-            Console.WriteLine($"junior: {j.Id}, name: {j.Name}");
-        }
-        foreach (var t in first.TeamLeads)
+            Console.WriteLine("----------------------------------");
+            Console.WriteLine($"Hackathon: {first.Id}, score: {first.Score}");
+            if (first.Juniors == null)
+            {
+                Console.WriteLine("Juniors are not found");
+            } else {
+                foreach (var j in first.Juniors)
+                {
+                    Console.WriteLine($"junior: {j.Id}, name: {j.Name}");
+                }
+            }
+            
+            if (first.TeamLeads == null)
+            {
+                Console.WriteLine("Teamleads are not found");
+            } else
+            {
+                foreach (var t in first.TeamLeads)
+                {
+                    Console.WriteLine($"teamlead: {t.Id}, name: {t.Name}");
+                }
+            }
+
+            if (first.Wishlists == null)
+            {
+                Console.WriteLine("Wishlist are not found");
+            } else
+            {
+                foreach (var w in first.Wishlists)
+                {
+                    Console.WriteLine($"wishlist: {w.EmployeeId}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
+                }
+            }
+            
+            if (first.Teams == null)
+            {
+                Console.WriteLine("Teams are not found");
+            } else
+            {
+                foreach (var t in first.Teams)
+                {
+                    Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
+                }
+            }
+        } else 
         {
-            Console.WriteLine($"teamlead: {t.Id}, name: {t.Name}");
+            Console.WriteLine("Hackathon is not found");
         }
-        foreach (var w in first.Wishlists)
-        {
-            Console.WriteLine($"wishlist: {w.EmployeeId}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
-        }
-        foreach (var t in first.Teams)
-        {
-            Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
-        }
+        
     }
 }

@@ -7,5 +7,5 @@ public class TeamDto()
     public int TeamLeadId { get; set; }
     public int JuniorId { get; set; }
     public int HackathonId { get; set; }
-    public HackathonDto Hackathon { get; set; }
+    public HackathonDto? Hackathon { get; set; }
 }
