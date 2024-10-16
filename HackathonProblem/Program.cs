@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.Strategies;
 using Nsu.HackathonProblem.HR;
+using Nsu.HackathonProblem.Utils;
 using Nsu.HackathonProblem.DataTransfer;
 
 namespace Nsu.HackathonProblem.HackathonProblem
@@ -23,6 +24,7 @@ namespace Nsu.HackathonProblem.HackathonProblem
                         .AddTransient<ITeamBuildingStrategy, BaseTeamBuildingStrategy>()
                         .AddTransient<HRManager>()
                         .AddTransient<HRDirector>()
+                        .AddTransient<IHarmonicCounter, HarmonicMeanCounter>()
                         .AddTransient<IDataTransfer, DatabaseDataTransfer>()
                         .BuildServiceProvider();
                 }).Build();

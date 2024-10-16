@@ -169,9 +169,6 @@ public static class Mapper
 
     public static Team MapTeamDtoToTeam(TeamDto teamDto)
     {
-        // var team = teamDto.Adapt<Team>();
-        // return team;
-
         return new Team(new Junior(teamDto.JuniorId, ""), 
                         new TeamLead(teamDto.TeamLeadId, ""));
     }

@@ -21,10 +21,10 @@ public class HRDirectorTest
         {
             indexes.Add(index);
         }
-        HRDirector director = new HRDirector();
+        IHarmonicCounter harmonicMeanCounter = new HarmonicMeanCounter();
 
         // Act
-        double harmonicMean = HarmonicMeanCounter.CountHarmonicMean(indexes);
+        double harmonicMean = harmonicMeanCounter.CountHarmonic(indexes);
 
         // Assert
         Assert.Equal(Convert.ToDouble(index), harmonicMean, 13);
@@ -41,10 +41,10 @@ public class HRDirectorTest
         {
             indexes.Add(0);
         }
-        HRDirector director = new HRDirector();
+        IHarmonicCounter harmonicMeanCounter = new HarmonicMeanCounter();
 
         // Act
-        Action throwingAction = () => { HarmonicMeanCounter.CountHarmonicMean(indexes); };
+        Action throwingAction = () => { harmonicMeanCounter.CountHarmonic(indexes); };
     
         // Assert
         Assert.Throws<ArgumentException>(throwingAction);
@@ -58,10 +58,10 @@ public class HRDirectorTest
     {
         // Arrange
         List<int> indexes = new List<int>() {a, b};
-        HRDirector director = new HRDirector();
+        IHarmonicCounter harmonicMeanCounter = new HarmonicMeanCounter();
 
         // Act
-        double harmonicMean = HarmonicMeanCounter.CountHarmonicMean(indexes);
+        double harmonicMean = harmonicMeanCounter.CountHarmonic(indexes);
 
         // Assert
         Assert.Equal(result, harmonicMean, 14);
@@ -81,7 +81,7 @@ public class HRDirectorTest
 
         HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
         var teams = manager.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists);
-        HRDirector director = new HRDirector();
+        HRDirector director = new HRDirector(new HarmonicMeanCounter());
 
         // Act
         double score = director.CountScore(teamLeads, juniors, teams, teamLeadsWishlists, juniorsWishlists);

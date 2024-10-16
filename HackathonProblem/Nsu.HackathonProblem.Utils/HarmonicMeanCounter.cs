@@ -1,8 +1,8 @@
 namespace Nsu.HackathonProblem.Utils;
 
-public static class HarmonicMeanCounter
+public class HarmonicMeanCounter : IHarmonicCounter
 {
-    public static double CountHarmonicMean(List<int> allIndexes)
+    public double CountHarmonic(List<int> allIndexes)
     {
         double sum = 0.0;
         foreach (int index in allIndexes)

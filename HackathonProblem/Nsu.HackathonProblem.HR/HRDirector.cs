@@ -3,7 +3,7 @@ using Nsu.HackathonProblem.Utils;
 
 namespace Nsu.HackathonProblem.HR
 {
-    public class HRDirector
+    public class HRDirector(IHarmonicCounter harmonicCounter)
     {
         public double CountScore(IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors,
             IEnumerable<Team> teams, IEnumerable<Wishlist> teamLeadsWishlists,
@@ -12,7 +12,7 @@ namespace Nsu.HackathonProblem.HR
             List<int> allIndexes = CountSatisfactionIndexes(juniors, teams, juniorsWishlists).ToList();
             allIndexes.AddRange(CountSatisfactionIndexes(teamLeads, teams, teamLeadsWishlists).ToList());
 
-            return HarmonicMeanCounter.CountHarmonicMean(allIndexes);
+            return harmonicCounter.CountHarmonic(allIndexes);
         }
 
         private int[] CountSatisfactionIndexes(IEnumerable<Employee> employees, IEnumerable<Team> teams, IEnumerable<Wishlist> wishlists)

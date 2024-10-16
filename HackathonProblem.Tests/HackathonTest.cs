@@ -22,7 +22,7 @@ public class HackathonTest
         IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist();
 
         HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
-        HRDirector director = new HRDirector();
+        HRDirector director = new HRDirector(new HarmonicMeanCounter());
         Hackathon hackathon = new Hackathon();
 
         // Act
@@ -45,7 +45,7 @@ public class HackathonTest
         IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist();
 
         HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
-        HRDirector director = new HRDirector();
+        HRDirector director = new HRDirector(new HarmonicMeanCounter());
         Hackathon hackathon = new Hackathon();
         Action throwingAction = () => { hackathon.RunHackathon(manager, director, teamLeads, juniors, teamLeadsWishlists, juniorsWishlists); };
     

@@ -26,23 +26,12 @@ public class HackathonContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // modelBuilder.Entity<EmployeeDto>()
-        //     .HasKey(e => new { e.Id, e.Name, e.Role, e.HackathonId });
 
         modelBuilder.Entity<ParticipantDto>()
             .HasKey(p => new { p.EmployeePk, p.HackathonId });
-        
-        // modelBuilder.Entity<WishlistDto>()
-        //     .HasKey(w => new { w.EmployeeId, w.DesiredEmployees, w.HackathonId });
 
         modelBuilder.Entity<TeamDto>()
             .HasKey(t => new { t.TeamLeadId, t.JuniorId, t.HackathonId });
-
-        // modelBuilder.Entity<EmployeeDto>()
-        //     .HasOne(e => e.Hackathon)
-        //     .WithMany(h => h.Employees)
-        //     .HasForeignKey(e => e.HackathonId)
-        //     .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<ParticipantDto>()
             .HasOne(p => p.Employee)
