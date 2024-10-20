@@ -7,6 +7,9 @@ public class RegisterMapper : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
+        TypeAdapterConfig<Team, TeamDto>
+                .NewConfig();
+
         TypeAdapterConfig<Junior, EmployeeDto>
                 .NewConfig()
                 .Map(dest => dest.Role, src => "Junior");

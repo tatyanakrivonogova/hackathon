@@ -14,6 +14,7 @@ public class HackathonContext : DbContext
     public HackathonContext(string database)
     {
         configuration = database;
+        // Database.EnsureDeleted();
         Database.EnsureCreated();
     }
 
@@ -25,9 +26,6 @@ public class HackathonContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<TeamDto>()
-            .HasKey(t => new { t.TeamLeadId, t.JuniorId, t.HackathonId });
-
         modelBuilder.Entity<WishlistDto>()
             .HasOne(w => w.Employee)
             .WithMany()
@@ -36,13 +34,11 @@ public class HackathonContext : DbContext
         modelBuilder.Entity<TeamDto>()
             .HasOne(t => t.Junior)
             .WithMany()
-            .HasForeignKey(t => t.JuniorId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<TeamDto>()
             .HasOne(t => t.TeamLead)
             .WithMany()
-            .HasForeignKey(t => t.TeamLeadId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

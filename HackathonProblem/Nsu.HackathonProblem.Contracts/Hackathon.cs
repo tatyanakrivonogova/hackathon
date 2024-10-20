@@ -6,7 +6,7 @@ namespace Nsu.HackathonProblem.Contracts
 {
     public class Hackathon
     {
-        [Key] public int Id { get; set; }
+        public int Id { get; set; }
         public double Score { get; set; }
         public IEnumerable<Wishlist>? Wishlists { get; set; }
         public IEnumerable<Team>? Teams { get; set; }
