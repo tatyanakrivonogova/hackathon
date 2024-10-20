@@ -1,11 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Mapster;
+
 using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.Strategies;
 using Nsu.HackathonProblem.HR;
 using Nsu.HackathonProblem.Utils;
-using Nsu.HackathonProblem.DataTransfer;
+using Nsu.HackathonProblem.Mapper;
 
 namespace Nsu.HackathonProblem.HackathonProblem
 {
@@ -13,6 +16,8 @@ namespace Nsu.HackathonProblem.HackathonProblem
     {
         static void Main(string[] args)
         {
+            new RegisterMapper().Register(new TypeAdapterConfig());
+            
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices((context, services) =>
                 {
@@ -20,12 +25,10 @@ namespace Nsu.HackathonProblem.HackathonProblem
                         (context.Configuration.GetSection("Hackathon"));
                     services.AddHostedService<ExperimentWorker>()
                         .AddSingleton<Experiment>()
-                        .AddTransient<Hackathon>()
                         .AddTransient<ITeamBuildingStrategy, BaseTeamBuildingStrategy>()
                         .AddTransient<HRManager>()
                         .AddTransient<HRDirector>()
                         .AddTransient<IHarmonicCounter, HarmonicMeanCounter>()
-                        .AddTransient<IDataTransfer, DatabaseDataTransfer>()
                         .BuildServiceProvider();
                 }).Build();
             host.Run();

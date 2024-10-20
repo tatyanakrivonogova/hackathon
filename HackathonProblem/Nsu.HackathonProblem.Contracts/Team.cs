@@ -1,4 +1,4 @@
 ﻿namespace Nsu.HackathonProblem.Contracts
 {
-    public record Team(Employee TeamLead, Employee Junior);
+    public record Team(TeamLead TeamLead, Junior Junior);
 }

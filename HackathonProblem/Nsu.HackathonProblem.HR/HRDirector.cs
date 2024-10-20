@@ -28,7 +28,7 @@ namespace Nsu.HackathonProblem.HR
                     if ((employee is TeamLead && t.Id == employee.Id)
                          || (employee is Junior && j.Id == employee.Id))
                     {
-                        var wishlist = wishlists.FirstOrDefault(w => w.EmployeeId == employee.Id);
+                        var wishlist = wishlists.FirstOrDefault(w => w.Employee.Id == employee.Id);
                         if (wishlist == null)
                             continue;
                         var rating = wishlist.DesiredEmployees;

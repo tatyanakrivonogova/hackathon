@@ -8,7 +8,6 @@ public class HackathonContext : DbContext
     string configuration;
     public DbSet<HackathonDto> Hackathon { get; init; }
     public DbSet<EmployeeDto> Employee { get; init; }
-    public DbSet<ParticipantDto> Participant { get; init; }
     public DbSet<WishlistDto> Wishlist { get; init; }
     public DbSet<TeamDto> Team { get; init; }
 
@@ -26,35 +25,24 @@ public class HackathonContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
-        modelBuilder.Entity<ParticipantDto>()
-            .HasKey(p => new { p.EmployeePk, p.HackathonId });
-
         modelBuilder.Entity<TeamDto>()
             .HasKey(t => new { t.TeamLeadId, t.JuniorId, t.HackathonId });
 
-        modelBuilder.Entity<ParticipantDto>()
-            .HasOne(p => p.Employee)
-            .WithMany()
-            .HasForeignKey(p => p.EmployeePk)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<ParticipantDto>()
-            .HasOne(p => p.Hackathon)
-            .WithMany(h => h.Participants)
-            .HasForeignKey(p => p.HackathonId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         modelBuilder.Entity<WishlistDto>()
-            .HasOne(w => w.Hackathon)
-            .WithMany(h => h.Wishlists)
-            .HasForeignKey(w => w.HackathonId)
+            .HasOne(w => w.Employee)
+            .WithMany()
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<TeamDto>()
-            .HasOne(t => t.Hackathon)
-            .WithMany(h => h.Teams)
-            .HasForeignKey(t => t.HackathonId)
+            .HasOne(t => t.Junior)
+            .WithMany()
+            .HasForeignKey(t => t.JuniorId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<TeamDto>()
+            .HasOne(t => t.TeamLead)
+            .WithMany()
+            .HasForeignKey(t => t.TeamLeadId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,4 +1,4 @@
 ﻿namespace Nsu.HackathonProblem.Contracts
 {
-    public record Wishlist(int EmployeeId, int[] DesiredEmployees);
+    public record Wishlist(Employee Employee, int[] DesiredEmployees);
 }

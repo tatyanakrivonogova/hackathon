@@ -1,13 +1,16 @@
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Mapster;
+
 using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.HR;
 using Nsu.HackathonProblem.Strategies;
 using Nsu.HackathonProblem.Utils;
 using Nsu.HackathonProblem.Dto;
-using Nsu.HackathonProblem.DataTransfer;
+using Nsu.HackathonProblem.Mapper;
 
-class Experiment(Hackathon hackathon, HRDirector director, HRManager manager, 
-                 IDataTransfer dataTransfer, IOptions<HackathonOptions> hackathonOptions)
+class Experiment(HRDirector director, HRManager manager, 
+                 IOptions<HackathonOptions> hackathonOptions)
 {
     public void Run()
     {
@@ -15,84 +18,90 @@ class Experiment(Hackathon hackathon, HRDirector director, HRManager manager,
 
         // reading juniors
         var juniors = EmployeesReader.ReadJuniors(options.juniorsFile);
-        hackathon.Juniors = juniors;
-
         // reading teamLeads
         var teamLeads = EmployeesReader.ReadTeamLeads(options.teamLeadsFile);
-        hackathon.TeamLeads = teamLeads;
-
-        dataTransfer.saveData(juniors.ToList(), teamLeads.ToList());
 
         double sumScore = 0.0;
-        for (int i = 0; i < options.hackathonRepeats; i++)
+        using (HackathonContext context = new HackathonContext(options.database))
         {
-            double score = hackathon.RunHackathon(manager, director, teamLeads, juniors);
-            hackathon.Score = score;
-            Console.WriteLine($"score [i={i}]: {score}");
-            sumScore += score;
-            dataTransfer.saveData(hackathon);
+            context.Employee.AddRange(juniors.Select(junior => junior.Adapt<EmployeeDto>()).ToList());
+            context.Employee.AddRange(teamLeads.Select(teamLead => teamLead.Adapt<EmployeeDto>()).ToList());
+            context.SaveChanges();
+
+            Hackathon hackathon = new Hackathon();
+            for (int i = 0; i < options.hackathonRepeats; i++)
+            {
+                double score = hackathon.RunHackathon(manager, director, teamLeads, juniors);
+                hackathon.Score = score;
+                Console.WriteLine($"score [i={i}]: {score}");
+                sumScore += score;
+                context.Hackathon.Add(hackathon.Adapt<HackathonDto>());
+                context.SaveChanges();
+            }
         }
 
         Console.WriteLine($"Average score for {options.hackathonRepeats} hackathons: {sumScore / options.hackathonRepeats}");
 
-        List<Hackathon> allHackathons = dataTransfer.loadData();
-        double allScoresSum = 0.0;
-        foreach (Hackathon hackathon in allHackathons)
+        using (HackathonContext context = new HackathonContext(options.database))
         {
-            allScoresSum += hackathon.Score;
+            List<Hackathon> allHackathons = context.Hackathon.Select(hackathonDto => hackathonDto.Adapt<Hackathon>()).ToList();
+            double allScoresSum = 0.0;
+            foreach (Hackathon hackathon in allHackathons)
+            {
+                allScoresSum += hackathon.Score;
+            }
+            Console.WriteLine($"Average score for all {allHackathons.Count()} hackathons: {allScoresSum / allHackathons.Count()}");
         }
-        Console.WriteLine($"Average score for all {allHackathons.Count()} hackathons: {allScoresSum / allHackathons.Count()}");
-        
-        Hackathon? first = allHackathons.Where(h => h.Id == 9).FirstOrDefault();
-        if (first != null)
-        {
-            Console.WriteLine("----------------------------------");
-            Console.WriteLine($"Hackathon: {first.Id}, score: {first.Score}");
-            if (first.Juniors == null)
-            {
-                Console.WriteLine("Juniors are not found");
-            } else {
-                foreach (var j in first.Juniors)
-                {
-                    Console.WriteLine($"junior: {j.Id}, name: {j.Name}");
-                }
-            }
-            
-            if (first.TeamLeads == null)
-            {
-                Console.WriteLine("Teamleads are not found");
-            } else
-            {
-                foreach (var t in first.TeamLeads)
-                {
-                    Console.WriteLine($"teamlead: {t.Id}, name: {t.Name}");
-                }
-            }
 
-            if (first.Wishlists == null)
-            {
-                Console.WriteLine("Wishlist are not found");
-            } else
-            {
-                foreach (var w in first.Wishlists)
-                {
-                    Console.WriteLine($"wishlist: {w.EmployeeId}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
-                }
-            }
-            
-            if (first.Teams == null)
-            {
-                Console.WriteLine("Teams are not found");
-            } else
-            {
-                foreach (var t in first.Teams)
-                {
-                    Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
-                }
-            }
-        } else 
+        int selectedId = 9; // for example
+        using (HackathonContext context = new HackathonContext(options.database))
         {
-            Console.WriteLine("Hackathon is not found");
+            // var employees = context.Employee;
+            Hackathon? selected = context.Hackathon
+                                         .Include("Wishlists.Employee")
+                                         .Include("Teams.Junior")
+                                         .Include("Teams.TeamLead")
+                                         .Select(hackathonDto => hackathonDto.Adapt<Hackathon>())
+                                         .ToList().Where(h => h.Id == selectedId).FirstOrDefault();
+            if (selected != null)
+            {
+                Console.WriteLine("----------------------------------");
+                Console.WriteLine($"Hackathon: {selected.Id}, score: {selected.Score}");
+                // if (employees == null)
+                // {
+                //     Console.WriteLine("Employees are not found");
+                // } else {
+                //     foreach (var e in employees)
+                //     {
+                //         Console.WriteLine($"employee: {e.Id}, name: {e.Name}, role: {e.Role}");
+                //     }
+                // }
+
+                if (selected.Wishlists == null)
+                {
+                    Console.WriteLine("Wishlist are not found");
+                } else
+                {
+                    foreach (var w in selected.Wishlists)
+                    {
+                        Console.WriteLine($"wishlist: {w.Employee}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
+                    }
+                }
+                
+                if (selected.Teams == null)
+                {
+                    Console.WriteLine("Teams are not found");
+                } else
+                {
+                    foreach (var t in selected.Teams)
+                    {
+                        Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
+                    }
+                }
+            } else 
+            {
+                Console.WriteLine("Hackathon is not found");
+            }
         }
         
     }

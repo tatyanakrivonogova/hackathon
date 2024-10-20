@@ -6,7 +6,7 @@ namespace Nsu.HackathonProblem.HR
     public class HRManager(ITeamBuildingStrategy concreteStrategy)
     {
         ITeamBuildingStrategy strategy = concreteStrategy;
-        public IEnumerable<Team> BuildTeams(IEnumerable<Employee> teamLeads, IEnumerable<Employee> juniors,
+        public IEnumerable<Team> BuildTeams(IEnumerable<TeamLead> teamLeads, IEnumerable<Junior> juniors,
             IEnumerable<Wishlist> teamLeadsWishlists, IEnumerable<Wishlist> juniorsWishlists)
         {
             if (teamLeads.Count() != juniors.Count())
