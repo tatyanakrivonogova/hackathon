@@ -12,11 +12,11 @@ class Experiment(IMediator mediator)
     {
         while (true)
         {
-            Console.WriteLine("Введите номер действия:");
-            Console.WriteLine("1 - Запустить хакатон");
-            Console.WriteLine("2 - Получить средний результат по всем хакатонам");
-            Console.WriteLine("3 - Получить хакатон по ID");
-            Console.WriteLine("0 - Выход");
+            Console.WriteLine("Enter command:");
+            Console.WriteLine("1 - Run hackathon");
+            Console.WriteLine("2 - Get average score for all hackathons");
+            Console.WriteLine("3 - Get hackathon by ID");
+            Console.WriteLine("0 - Exit");
             var input = Console.ReadLine();
             if (input == "0") break;
 
@@ -24,16 +24,16 @@ class Experiment(IMediator mediator)
             {
                 case "1":
                     var harmonicMean = await mediator.Send(new RunHackathonRequest());
-                    Console.WriteLine($"Среднее гармоническое проведенного хакатона: {harmonicMean}");
+                    Console.WriteLine($"Harmonic mean for current hackathon: {harmonicMean}");
                     break;
 
                 case "2":
                     var avgScore = await mediator.Send(new GetAverageScoreRequest());
-                    Console.WriteLine($"Средний результат по всем хакатонам: {avgScore}");
+                    Console.WriteLine($"Average score fo all hackathons: {avgScore}");
                     break;
 
                 case "3":
-                    Console.WriteLine("Введите ID хакатона:");
+                    Console.WriteLine("Enter hackathon ID:");
                     int id = int.Parse(Console.ReadLine());
                     var hackathon = await mediator.Send(new GetHackathonByIdRequest(id));
                     if (hackathon != null)
@@ -69,7 +69,7 @@ class Experiment(IMediator mediator)
                     break;
 
                 default:
-                    Console.WriteLine("Неверный ввод. Попробуйте снова.");
+                    Console.WriteLine("Invalid command. Try again");
                     break;
             }
         }
