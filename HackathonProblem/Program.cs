@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
 using Mapster;
 
 using Nsu.HackathonProblem.Contracts;
@@ -9,6 +8,7 @@ using Nsu.HackathonProblem.Strategies;
 using Nsu.HackathonProblem.HR;
 using Nsu.HackathonProblem.Utils;
 using Nsu.HackathonProblem.Mapper;
+using Nsu.HackathonProblem.DataTransfer;
 
 namespace Nsu.HackathonProblem.HackathonProblem
 {
@@ -29,6 +29,7 @@ namespace Nsu.HackathonProblem.HackathonProblem
                         .AddTransient<HRManager>()
                         .AddTransient<HRDirector>()
                         .AddTransient<IHarmonicCounter, HarmonicMeanCounter>()
+                        .AddSingleton<IDataTransfer, DatabaseDataTransfer>()
                         .BuildServiceProvider();
                 }).Build();
             host.Run();
