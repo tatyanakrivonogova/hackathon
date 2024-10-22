@@ -30,6 +30,10 @@ namespace Nsu.HackathonProblem.HackathonProblem
                         .AddTransient<HRDirector>()
                         .AddTransient<IHarmonicCounter, HarmonicMeanCounter>()
                         .AddSingleton<IDataTransfer, DatabaseDataTransfer>()
+                        .AddMediatR(cfg => 
+                            {
+                                cfg.RegisterServicesFromAssemblyContaining<Program>();
+                            })
                         .BuildServiceProvider();
                 }).Build();
             host.Run();

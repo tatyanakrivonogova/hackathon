@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Options;
+using MediatR;
 
 using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.HR;
@@ -6,73 +6,72 @@ using Nsu.HackathonProblem.Strategies;
 using Nsu.HackathonProblem.Utils;
 using Nsu.HackathonProblem.DataTransfer;
 
-class Experiment(HRDirector director, HRManager manager, 
-                 IOptions<HackathonOptions> hackathonOptions,
-                 IDataTransfer dataTransfer)
+class Experiment(IMediator mediator)
 {
-    public void Run()
+    public async Task Run()
     {
-        HackathonOptions options = hackathonOptions.Value;
-
-        // reading juniors
-        var juniors = EmployeesReader.ReadJuniors(options.juniorsFile);
-        // reading teamLeads
-        var teamLeads = EmployeesReader.ReadTeamLeads(options.teamLeadsFile);
-
-        double sumScore = 0.0;
-
-        Hackathon hackathon = new Hackathon();
-        for (int i = 0; i < options.hackathonRepeats; i++)
+        while (true)
         {
-            double score = hackathon.RunHackathon(manager, director, teamLeads, juniors);
-            hackathon.Score = score;
-            Console.WriteLine($"score [i={i}]: {score}");
-            sumScore += score;
-            dataTransfer.SaveHackathon(hackathon, options);
-        }
+            Console.WriteLine("Введите номер действия:");
+            Console.WriteLine("1 - Запустить хакатон");
+            Console.WriteLine("2 - Получить средний результат по всем хакатонам");
+            Console.WriteLine("3 - Получить хакатон по ID");
+            Console.WriteLine("0 - Выход");
+            var input = Console.ReadLine();
+            if (input == "0") break;
 
-        Console.WriteLine($"Average score for {options.hackathonRepeats} hackathons: {sumScore / options.hackathonRepeats}");
-
-        var allHackathons = dataTransfer.LoadAllHackathons(options);
-        double allScoresSum = 0.0;
-        foreach (Hackathon h in allHackathons)
-        {
-            allScoresSum += hackathon.Score;
-        }
-        Console.WriteLine($"Average score for all {allHackathons.Count()} hackathons: {allScoresSum / allHackathons.Count()}");
-
-        int selectedId = 1; // for example
-        var selected = dataTransfer.LoadHackathonById(selectedId, options);
-        if (selected != null)
-        {
-            Console.WriteLine("----------------------------------");
-            Console.WriteLine($"Hackathon: {selected.Id}, score: {selected.Score}");
-
-            if (selected.Wishlists == null)
+            switch (input)
             {
-                Console.WriteLine("Wishlist are not found");
-            } else
-            {
-                foreach (var w in selected.Wishlists)
-                {
-                    Console.WriteLine($"wishlist: {w.Employee}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
-                }
+                case "1":
+                    var harmonicMean = await mediator.Send(new RunHackathonRequest());
+                    Console.WriteLine($"Среднее гармоническое проведенного хакатона: {harmonicMean}");
+                    break;
+
+                case "2":
+                    var avgScore = await mediator.Send(new GetAverageScoreRequest());
+                    Console.WriteLine($"Средний результат по всем хакатонам: {avgScore}");
+                    break;
+
+                case "3":
+                    Console.WriteLine("Введите ID хакатона:");
+                    int id = int.Parse(Console.ReadLine());
+                    var hackathon = await mediator.Send(new GetHackathonByIdRequest(id));
+                    if (hackathon != null)
+                    {
+                        Console.WriteLine("----------------------------------");
+                        Console.WriteLine($"Hackathon: {hackathon.Id}, score: {hackathon.Score}");
+
+                        if (hackathon.Wishlists == null)
+                        {
+                            Console.WriteLine("Wishlist are not found");
+                        } else
+                        {
+                            foreach (var w in hackathon.Wishlists)
+                            {
+                                Console.WriteLine($"wishlist: {w.Employee}, desiredEmployees: {w.DesiredEmployees[0]}, {w.DesiredEmployees[1]}, {w.DesiredEmployees[2]}, {w.DesiredEmployees[3]}, {w.DesiredEmployees[4]}");
+                            }
+                        }
+                        
+                        if (hackathon.Teams == null)
+                        {
+                            Console.WriteLine("Teams are not found");
+                        } else
+                        {
+                            foreach (var t in hackathon.Teams)
+                            {
+                                Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
+                            }
+                        }
+                    } else 
+                    {
+                        Console.WriteLine("Hackathon is not found");
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("Неверный ввод. Попробуйте снова.");
+                    break;
             }
-            
-            if (selected.Teams == null)
-            {
-                Console.WriteLine("Teams are not found");
-            } else
-            {
-                foreach (var t in selected.Teams)
-                {
-                    Console.WriteLine($"team: {t.Junior}, {t.TeamLead}");
-                }
-            }
-        } else 
-        {
-            Console.WriteLine("Hackathon is not found");
         }
-        
     }
 }
