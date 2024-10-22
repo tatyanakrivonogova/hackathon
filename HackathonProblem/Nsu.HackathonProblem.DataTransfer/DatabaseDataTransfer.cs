@@ -9,34 +9,30 @@ namespace Nsu.HackathonProblem.DataTransfer
 {
     class DatabaseDataTransfer : IDataTransfer
     {
+        private HackathonContext context;
+        public DatabaseDataTransfer(HackathonContext context)
+        {
+            this.context = context;
+        }
         public void SaveHackathon(Hackathon hackathon, HackathonOptions options) {
-            using (HackathonContext context = new HackathonContext(options.database))
-            {
-                context.Hackathon.Add(MapHackathon(hackathon));
-                context.SaveChanges();
-            }
+            context.Hackathon.Add(MapHackathon(hackathon));
+            context.SaveChanges();
         }
 
         public List<Hackathon> LoadAllHackathons(HackathonOptions options)
         {
-            using (HackathonContext context = new HackathonContext(options.database))
-            {
-                return context.Hackathon.Select(hackathonDto => hackathonDto.Adapt<Hackathon>()).ToList();
-            }
+            return context.Hackathon.Select(hackathonDto => hackathonDto.Adapt<Hackathon>()).ToList();
         }
 
         public Hackathon? LoadHackathonById(int id, HackathonOptions options)
         {
-            using (HackathonContext context = new HackathonContext(options.database))
-            {
-                Hackathon? selected = context.Hackathon
-                                            .Include("Wishlists.Employee")
-                                            .Include("Teams.Junior")
-                                            .Include("Teams.TeamLead")
-                                            .Select(hackathonDto => hackathonDto.Adapt<Hackathon>())
-                                            .ToList().Where(h => h.Id == id).FirstOrDefault();
-                return selected;
-            }
+            Hackathon? selected = context.Hackathon
+                                        .Include("Wishlists.Employee")
+                                        .Include("Teams.Junior")
+                                        .Include("Teams.TeamLead")
+                                        .Select(hackathonDto => hackathonDto.Adapt<Hackathon>())
+                                        .ToList().Where(h => h.Id == id).FirstOrDefault();
+            return selected;
         }
 
         private List<WishlistDto> MapWishlists(IEnumerable<Wishlist> wishlists, Dictionary<Employee, EmployeeDto> employeeCache)
@@ -86,7 +82,7 @@ namespace Nsu.HackathonProblem.DataTransfer
             {
                 throw new ArgumentException("Wishlists or teams for hackathon are undefined");
             }
-            
+
             var employeeCache = new Dictionary<Employee, EmployeeDto>();
             HackathonDto hackathonDto = new HackathonDto()
             {

@@ -29,6 +29,7 @@ namespace Nsu.HackathonProblem.HackathonProblem
                         .AddTransient<HRManager>()
                         .AddTransient<HRDirector>()
                         .AddTransient<IHarmonicCounter, HarmonicMeanCounter>()
+                        .AddSingleton<HackathonContext>()
                         .AddSingleton<IDataTransfer, DatabaseDataTransfer>()
                         .AddMediatR(cfg => 
                             {

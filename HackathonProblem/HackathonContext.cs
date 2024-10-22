@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 using Microsoft.Extensions.Logging;
 using Nsu.HackathonProblem.Contracts;
 using Nsu.HackathonProblem.Dto;
@@ -11,9 +13,9 @@ public class HackathonContext : DbContext
     public DbSet<WishlistDto> Wishlist { get; init; }
     public DbSet<TeamDto> Team { get; init; }
 
-    public HackathonContext(string database)
+    public HackathonContext(IOptions<HackathonOptions> hackathonOptions)
     {
-        configuration = database;
+        configuration = hackathonOptions.Value.database;
         // Database.EnsureDeleted();
         Database.EnsureCreated();
     }
