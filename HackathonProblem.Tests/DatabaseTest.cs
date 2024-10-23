@@ -18,7 +18,7 @@ public class DatabaseTest : IAsyncLifetime
         new RegisterMapper().Register(new TypeAdapterConfig());
 
         _postgresContainer = new PostgreSqlBuilder()
-            .WithImage("postgres:15-alpine")
+            .WithImage("postgres:latest")
             .Build();
 
         await _postgresContainer.StartAsync();
