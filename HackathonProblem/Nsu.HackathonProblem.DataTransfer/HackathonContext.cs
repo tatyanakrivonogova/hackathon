@@ -18,14 +18,15 @@ namespace Nsu.HackathonProblem.DataTransfer
         public HackathonContext(IOptions<DatabaseOptions> databaseOptions)
         {
             configuration = databaseOptions.Value.database;
-            // Database.EnsureDeleted();
-            Database.EnsureCreated();
+            if (databaseOptions.Value.needMigration)
+            {
+                Database.Migrate();
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(configuration);
-                    //   .LogTo(Console.WriteLine, LogLevel.Information);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

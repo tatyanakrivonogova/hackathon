@@ -31,7 +31,7 @@ namespace Nsu.HackathonProblem.HackathonProblem
                         .AddTransient<HRManager>()
                         .AddTransient<HRDirector>()
                         .AddTransient<IHarmonicCounter, HarmonicMeanCounter>()
-                        .AddSingleton<HackathonContext>()
+                        .AddDbContext<HackathonContext>()
                         .AddSingleton<IDataTransfer, DatabaseDataTransfer>()
                         .AddMediatR(cfg => 
                             {
@@ -39,6 +39,7 @@ namespace Nsu.HackathonProblem.HackathonProblem
                             })
                         .BuildServiceProvider();
                 }).Build();
+
             host.Run();
         }
     }
