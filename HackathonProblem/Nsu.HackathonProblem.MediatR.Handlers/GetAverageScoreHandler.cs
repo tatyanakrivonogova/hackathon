@@ -17,6 +17,6 @@ class GetAverageScoreHandler : IRequestHandler<GetAverageScoreRequest, double>
 
     public Task<double> Handle(GetAverageScoreRequest request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(dataTransfer.LoadAllHackathons(options).Average(h => h.Score));
+        return Task.FromResult(dataTransfer.LoadAllHackathons().Average(h => h.Score));
     }
 }

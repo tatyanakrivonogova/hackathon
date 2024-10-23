@@ -17,6 +17,6 @@ class GetHackathonByIdHandler : IRequestHandler<GetHackathonByIdRequest, Hackath
 
     public Task<Hackathon> Handle(GetHackathonByIdRequest request, CancellationToken cancellationToken)
     {
-        return Task.FromResult(dataTransfer.LoadHackathonById(request.Id, options));
+        return Task.FromResult(dataTransfer.LoadHackathonById(request.Id));
     }
 }

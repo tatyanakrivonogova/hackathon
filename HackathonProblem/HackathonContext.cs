@@ -13,9 +13,9 @@ public class HackathonContext : DbContext
     public DbSet<WishlistDto> Wishlist { get; init; }
     public DbSet<TeamDto> Team { get; init; }
 
-    public HackathonContext(IOptions<HackathonOptions> hackathonOptions)
+    public HackathonContext(IOptions<DatabaseOptions> databaseOptions)
     {
-        configuration = hackathonOptions.Value.database;
+        configuration = databaseOptions.Value.database;
         // Database.EnsureDeleted();
         Database.EnsureCreated();
     }

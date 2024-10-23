@@ -18,8 +18,8 @@ public class HackathonTest
         var juniors = EmployeesReader.ReadJuniors(juniorsFile);
         var teamLeads = EmployeesReader.ReadTeamLeads(teamLeadsFile);
 
-        IEnumerable<Wishlist> juniorsWishlists = TestDataInitializer.GetJuniorsWishlist();
-        IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist();
+        IEnumerable<Wishlist> juniorsWishlists = TestDataInitializer.GetJuniorsWishlist(juniors.ToList());
+        IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist(teamLeads.ToList());
 
         HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
         HRDirector director = new HRDirector(new HarmonicMeanCounter());
@@ -41,8 +41,8 @@ public class HackathonTest
         var juniors = EmployeesReader.ReadJuniors(juniorsFile);
         var teamLeads = EmployeesReader.ReadTeamLeads(teamLeadsFile);
 
-        IEnumerable<Wishlist> juniorsWishlists = TestDataInitializer.GetJuniorsWishlist();
-        IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist();
+        IEnumerable<Wishlist> juniorsWishlists = TestDataInitializer.GetJuniorsWishlist(juniors.ToList());
+        IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist(teamLeads.ToList());
 
         HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
         HRDirector director = new HRDirector(new HarmonicMeanCounter());

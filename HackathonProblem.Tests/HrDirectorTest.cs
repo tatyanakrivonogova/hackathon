@@ -76,8 +76,8 @@ public class HRDirectorTest
         var juniors = EmployeesReader.ReadJuniors(juniorsFile);
         var teamLeads = EmployeesReader.ReadTeamLeads(teamLeadsFile);
 
-        IEnumerable<Wishlist> juniorsWishlists = TestDataInitializer.GetJuniorsWishlist();
-        IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist();
+        IEnumerable<Wishlist> juniorsWishlists = TestDataInitializer.GetJuniorsWishlist(juniors.ToList());
+        IEnumerable<Wishlist> teamLeadsWishlists = TestDataInitializer.GetTeamLeadsWishlist(teamLeads.ToList());
 
         HRManager manager = new HRManager(new BaseTeamBuildingStrategy());
         var teams = manager.BuildTeams(teamLeads, juniors, teamLeadsWishlists, juniorsWishlists);

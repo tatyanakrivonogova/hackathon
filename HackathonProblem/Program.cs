@@ -23,6 +23,8 @@ namespace Nsu.HackathonProblem.HackathonProblem
                 {
                     services.AddOptions<HackathonOptions>().Bind
                         (context.Configuration.GetSection("Hackathon"));
+                        services.AddOptions<DatabaseOptions>().Bind
+                        (context.Configuration.GetSection("Database"));
                     services.AddHostedService<ExperimentWorker>()
                         .AddSingleton<Experiment>()
                         .AddTransient<ITeamBuildingStrategy, BaseTeamBuildingStrategy>()

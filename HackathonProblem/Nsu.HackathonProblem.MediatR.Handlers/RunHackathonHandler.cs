@@ -33,7 +33,7 @@ class RunHackathonHandler : IRequestHandler<RunHackathonRequest, double>
         Hackathon hackathon = new Hackathon();
         double score = hackathon.RunHackathon(manager, director, teamLeads, juniors);
         hackathon.Score = score;
-        dataTransfer.SaveHackathon(hackathon, options);
+        dataTransfer.SaveHackathon(hackathon);
 
         return Task.FromResult(score);
     }

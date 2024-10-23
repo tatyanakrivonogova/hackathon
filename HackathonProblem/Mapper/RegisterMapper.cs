@@ -14,5 +14,9 @@ public class RegisterMapper : IRegister
         TypeAdapterConfig<TeamLead, EmployeeDto>
             .NewConfig()
             .Map(dest => dest.Role, src => "TeamLead");
+
+        TypeAdapterConfig<Employee, EmployeeDto>
+            .NewConfig()
+            .Map(dest => dest.Role, src => "");
     }
 }

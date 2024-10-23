@@ -4,8 +4,8 @@ namespace Nsu.HackathonProblem.DataTransfer
 {
     public interface IDataTransfer
     {
-        void SaveHackathon(Hackathon hackathon, HackathonOptions option);
-        List<Hackathon> LoadAllHackathons(HackathonOptions option);
-        Hackathon? LoadHackathonById(int id, HackathonOptions option);
+        void SaveHackathon(Hackathon hackathon);
+        List<Hackathon> LoadAllHackathons();
+        Hackathon? LoadHackathonById(int id);
     }
 }

@@ -7,24 +7,25 @@ using Nsu.HackathonProblem.Dto;
 
 namespace Nsu.HackathonProblem.DataTransfer
 {
-    class DatabaseDataTransfer : IDataTransfer
+    public class DatabaseDataTransfer : IDataTransfer
     {
         private HackathonContext context;
         public DatabaseDataTransfer(HackathonContext context)
         {
             this.context = context;
         }
-        public void SaveHackathon(Hackathon hackathon, HackathonOptions options) {
-            context.Hackathon.Add(MapHackathon(hackathon));
+        public void SaveHackathon(Hackathon hackathon) {
+            HackathonDto hackathonDto = MapHackathon(hackathon);
+            context.Hackathon.Add(hackathonDto);
             context.SaveChanges();
         }
 
-        public List<Hackathon> LoadAllHackathons(HackathonOptions options)
+        public List<Hackathon> LoadAllHackathons()
         {
             return context.Hackathon.Select(hackathonDto => hackathonDto.Adapt<Hackathon>()).ToList();
         }
 
-        public Hackathon? LoadHackathonById(int id, HackathonOptions options)
+        public Hackathon? LoadHackathonById(int id)
         {
             Hackathon? selected = context.Hackathon
                                         .Include("Wishlists.Employee")
