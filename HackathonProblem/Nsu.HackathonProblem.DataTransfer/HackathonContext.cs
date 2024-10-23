@@ -30,6 +30,18 @@ namespace Nsu.HackathonProblem.DataTransfer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<EmployeeDto>()
+                .HasKey(e => e.EmployeePk);
+
+            modelBuilder.Entity<TeamDto>()
+                .HasKey(t => t.TeamPk);
+
+            modelBuilder.Entity<WishlistDto>()
+                .HasKey(w => w.WishlistPk);
+
+            modelBuilder.Entity<HackathonDto>()
+                .HasKey(h => h.Id);
+
             modelBuilder.Entity<WishlistDto>()
                 .HasOne(w => w.Employee)
                 .WithMany()
